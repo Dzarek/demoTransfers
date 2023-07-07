@@ -1,0 +1,49 @@
+{
+  "name": "demotransfers",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js",
+    "lint": "next lint",
+    "export": "next build && next export"
+  },
+  "dependencies": {
+    "@react-email/body": "^0.0.2",
+    "@react-email/button": "^0.0.9",
+    "@react-email/column": "^0.0.7",
+    "@react-email/container": "^0.0.8",
+    "@react-email/head": "^0.0.5",
+    "@react-email/heading": "^0.0.8",
+    "@react-email/html": "^0.0.4",
+    "@react-email/img": "^0.0.5",
+    "@react-email/link": "^0.0.5",
+    "@react-email/render": "^0.0.7",
+    "@react-email/row": "^0.0.5",
+    "@react-email/section": "^0.0.9",
+    "@react-email/text": "^0.0.5",
+    "aos": "^2.3.4",
+    "chart.js": "^4.3.0",
+    "file-saver": "^2.0.5",
+    "firebase": "^9.17.1",
+    "moment": "^2.29.4",
+    "next": "12.2.2",
+    "nodemailer": "^6.9.3",
+    "react": "^17.0.2",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^17.0.2",
+    "react-firebase-hooks": "^5.1.1",
+    "react-firebaseui": "^6.0.0",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^4.9.0",
+    "react-scroll": "^1.8.9",
+    "styled-components": "^5.3.3",
+    "uuid": "^9.0.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "eslint": "8.19.0",
+    "eslint-config-next": "12.2.2"
+  }
+}
