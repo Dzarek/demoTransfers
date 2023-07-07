@@ -18,7 +18,7 @@ export const Email = ({ dataUpperCase, convertDate }) => (
           <Img
             style={imgHeader}
             width={340}
-            src="https://airportgr8way.vercel.app/images/car2.png"
+            src="https://demo-transfers.vercel.app/images/car2.png"
           />
           <Heading style={headerContentTitle}>
             NOWY TRANSFER OD {dataUpperCase}
@@ -31,7 +31,7 @@ export const Email = ({ dataUpperCase, convertDate }) => (
             Potwierdź zlecenie w aplikacji!
           </Text>
           <Section style={buttonContainer}>
-            <Link style={button} href="https://airportgr8way.vercel.app/">
+            <Link style={button} href="https://demo-transfers.vercel.app/">
               otwórz aplikację
             </Link>
           </Section>

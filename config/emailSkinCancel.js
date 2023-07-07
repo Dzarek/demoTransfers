@@ -18,7 +18,7 @@ export const Email = ({ dataUpperCase, convertDate, nameOfGuestUpperCase }) => (
           <Img
             style={imgHeader}
             width={180}
-            src="https://airportgr8way.vercel.app/images/cancelEmail.png"
+            src="https://demo-transfers.vercel.app/images/car2.png"
           />
           <Heading style={headerContentTitle}>
             ANULACJA TRANSFERU OD {dataUpperCase}
@@ -31,7 +31,7 @@ export const Email = ({ dataUpperCase, convertDate, nameOfGuestUpperCase }) => (
             <strong>{nameOfGuestUpperCase}</strong>. <br /> Sprawdź w aplikacji!
           </Text>
           <Section style={buttonContainer}>
-            <Link style={button} href="https://airportgr8way.vercel.app/">
+            <Link style={button} href="https://demo-transfers.vercel.app/">
               otwórz aplikację
             </Link>
           </Section>

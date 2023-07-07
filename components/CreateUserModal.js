@@ -24,6 +24,10 @@ const CreateUserModal = ({ setOpenCreateUserModal }) => {
       setErrorLogin("Proszę uzupełnić wszystkie pola!");
       return;
     }
+    if (password.length < 6) {
+      setErrorLogin("Hasło musi zawierać min 6 znaków!");
+      return;
+    }
     try {
       createNewUser(email, password, newName);
       setErrorLogin("");
@@ -64,6 +68,7 @@ const CreateUserModal = ({ setOpenCreateUserModal }) => {
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               required
+              min={6}
             />
             <button type="submit">
               <IoAddCircle />
@@ -185,6 +190,9 @@ const Wrapper = styled.div`
     p {
       text-align: center;
     }
+  }
+  .errorInfo {
+    text-align: center;
   }
 `;
 
