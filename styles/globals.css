@@ -153,3 +153,24 @@ html::-webkit-scrollbar-thumb {
 html::-webkit-scrollbar-thumb:hover {
     background: #65481e;
 }
+
+.showInstructionBtn {
+    position: fixed;
+    top: 1vh;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #aaa;
+    color: white;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.4s;
+    z-index: 100000000000000000;
+    border: none;
+    font-family: var(--textFont);
+}
+
+.showInstructionBtn:hover {
+    background: #222;
+}
