@@ -201,7 +201,7 @@ const ReservationPage = () => {
               <label htmlFor="flyNumber">Numer lotu:</label>
               <input
                 type="text"
-                required
+                required={direction === `Kraków Airport - ${name}`}
                 value={flight}
                 onChange={(e) => setFlight(e.target.value)}
               />
