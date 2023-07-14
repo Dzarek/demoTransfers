@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import moment from "moment/min/moment-with-locales";
 import { v4 as uuidv4 } from "uuid";
 import { IoAddCircle, IoCheckmark } from "react-icons/io5";
+import { FaLock, FaLockOpen } from "react-icons/fa";
 import { sendConfirmation } from "../lib/api";
 
 let minDate = moment().format("YYYY-MM-DD");
@@ -26,6 +27,8 @@ const ReservationPage = () => {
   const [price, setPrice] = useState(0);
   const [provision, setProvision] = useState(0);
   const [sendForm, setSendForm] = useState(false);
+
+  const [specialTransfer, setSpecialTransfer] = useState(false);
 
   const { push } = useRouter();
 
@@ -74,6 +77,7 @@ const ReservationPage = () => {
       price,
       provision,
       createdDate,
+      specialTransfer,
     };
     setTransfers([...transfers, newTransfer]);
     postProducts(
@@ -89,7 +93,8 @@ const ReservationPage = () => {
       phone,
       price,
       provision,
-      createdDate
+      createdDate,
+      specialTransfer
     );
     setSendForm(true);
     setTimeout(() => {
@@ -104,6 +109,7 @@ const ReservationPage = () => {
       setPrice(0);
       setProvision(0);
       setSendForm(false);
+      setSpecialTransfer(false);
     }, 2000);
     handleEmailConfirm();
   };
@@ -138,106 +144,250 @@ const ReservationPage = () => {
           <IoCheckmark />
         </h3>
       ) : (
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <div>
-            <section>
-              <label htmlFor="date">Data:</label>
-              <input
-                type="date"
-                name="date"
-                value={date}
-                min={minDate}
-                max={maxDate}
-                onChange={(e) => setDate(e.target.value)}
-                required
-              />
-            </section>
-            <section>
-              <label htmlFor="time">Godzina:</label>
-              <input
-                type="time"
-                name="time"
-                value={time}
-                min={date === minDate && minTime}
-                onChange={(e) => setTime(e.target.value)}
-                required
-              />
-            </section>
-          </div>
-          <section>
-            <label htmlFor="name">Imię i Nazwisko:</label>
-            <input
-              type="text"
-              name="name"
-              value={nameOfGuest}
-              onChange={(e) => setNameOfGuest(e.target.value)}
-              required
-            />
-          </section>
-          <section>
-            <label htmlFor="direction">Kierunek:</label>
-            <select
-              name="direction"
-              value={direction}
-              onChange={(e) => setDirection(e.target.value)}
-              required
-            >
-              {directions}
-            </select>{" "}
-          </section>
-          <div>
-            <section>
-              <label htmlFor="people">Liczba osób:</label>
-              <input
-                type="number"
-                required
-                min={1}
-                max={8}
-                value={people}
-                onChange={(e) => setPeople(e.target.value)}
-              />
-            </section>
-            <section>
-              <label htmlFor="flyNumber">Numer lotu:</label>
-              <input
-                type="text"
-                required={direction === `Kraków Airport - ${name}`}
-                value={flight}
-                onChange={(e) => setFlight(e.target.value)}
-              />
-            </section>
-            <section>
-              <label htmlFor="flyNumber">Telefon:</label>
-              <input
-                type="number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-              />
-            </section>
-          </div>
-          <section>
-            <label htmlFor="details">Uwagi:</label>
-            <input
-              type="text"
-              value={details}
-              onChange={(e) => setDetails(e.target.value)}
-            />
-          </section>
-          <div>
-            <section className="price">
-              <label htmlFor="price">Cena:</label>
-              <h4>{price} PLN</h4>
-            </section>
-            <section className="price">
-              <label htmlFor="provision">Prowizja:</label>
-              <h4>{provision} PLN</h4>
-            </section>
-          </div>
-          <button type="submit">
-            <IoAddCircle />
-          </button>
-        </form>
+        <>
+          {specialTransfer ? (
+            <form onSubmit={(e) => handleSubmit(e)} className="specialForm">
+              <div>
+                <section>
+                  <label htmlFor="date">Data:</label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={date}
+                    min={minDate}
+                    max={maxDate}
+                    onChange={(e) => setDate(e.target.value)}
+                    required
+                  />
+                </section>
+                <section>
+                  <label htmlFor="time">Godzina:</label>
+                  <input
+                    type="time"
+                    name="time"
+                    value={time}
+                    min={date === minDate && minTime}
+                    onChange={(e) => setTime(e.target.value)}
+                    required
+                  />
+                </section>
+              </div>
+              <section>
+                <label htmlFor="name">Imię i Nazwisko:</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={nameOfGuest}
+                  onChange={(e) => setNameOfGuest(e.target.value)}
+                  required
+                />
+              </section>
+              <section>
+                <label htmlFor="direction">Kierunek:</label>
+                <select
+                  name="direction"
+                  value={direction}
+                  onChange={(e) => setDirection(e.target.value)}
+                  required
+                >
+                  {directions}
+                </select>{" "}
+              </section>
+              <div>
+                <section>
+                  <label htmlFor="people">Liczba osób:</label>
+                  <input
+                    type="number"
+                    required
+                    min={1}
+                    max={99}
+                    value={people}
+                    onChange={(e) => setPeople(e.target.value)}
+                  />
+                  <p>(max 99)</p>
+                </section>
+                <section>
+                  <label htmlFor="flyNumber">Numer lotu:</label>
+                  <input
+                    type="text"
+                    required={direction === `Kraków Airport - ${name}`}
+                    value={flight}
+                    onChange={(e) => setFlight(e.target.value)}
+                  />
+                </section>
+                <section>
+                  <label htmlFor="flyNumber">Telefon:</label>
+                  <input
+                    type="number"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                  />
+                </section>
+              </div>
+              <section>
+                <label htmlFor="details">Uwagi:</label>
+                <input
+                  type="text"
+                  value={details}
+                  onChange={(e) => setDetails(e.target.value)}
+                />
+              </section>
+              <div>
+                <section className="specialPrice">
+                  <label htmlFor="price">Cena:</label>
+                  <input
+                    type="number"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                  <p> PLN</p>
+                  <FaLockOpen />
+                </section>
+                <section className="specialPrice">
+                  <label htmlFor="provision">Prowizja:</label>
+                  <input
+                    type="number"
+                    value={provision}
+                    onChange={(e) => setProvision(e.target.value)}
+                  />
+                  <p> PLN</p>
+                  <FaLockOpen />
+                </section>
+              </div>
+              <button className="reservebutton" type="submit">
+                <IoAddCircle />
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <div>
+                <section>
+                  <label htmlFor="date">Data:</label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={date}
+                    min={minDate}
+                    max={maxDate}
+                    onChange={(e) => setDate(e.target.value)}
+                    required
+                  />
+                </section>
+                <section>
+                  <label htmlFor="time">Godzina:</label>
+                  <input
+                    type="time"
+                    name="time"
+                    value={time}
+                    min={date === minDate && minTime}
+                    onChange={(e) => setTime(e.target.value)}
+                    required
+                  />
+                </section>
+              </div>
+              <section>
+                <label htmlFor="name">Imię i Nazwisko:</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={nameOfGuest}
+                  onChange={(e) => setNameOfGuest(e.target.value)}
+                  required
+                />
+              </section>
+              <section>
+                <label htmlFor="direction">Kierunek:</label>
+                <select
+                  name="direction"
+                  value={direction}
+                  onChange={(e) => setDirection(e.target.value)}
+                  required
+                >
+                  {directions}
+                </select>{" "}
+              </section>
+              <div>
+                <section>
+                  <label htmlFor="people">Liczba osób:</label>
+                  <input
+                    type="number"
+                    required
+                    min={1}
+                    max={8}
+                    value={people}
+                    onChange={(e) => setPeople(e.target.value)}
+                  />
+                  <p>(max 8)</p>
+                </section>
+                <section>
+                  <label htmlFor="flyNumber">Numer lotu:</label>
+                  <input
+                    type="text"
+                    required={direction === `Kraków Airport - ${name}`}
+                    value={flight}
+                    onChange={(e) => setFlight(e.target.value)}
+                  />
+                </section>
+                <section>
+                  <label htmlFor="flyNumber">Telefon:</label>
+                  <input
+                    type="number"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                  />
+                </section>
+              </div>
+              <section>
+                <label htmlFor="details">Uwagi:</label>
+                <input
+                  type="text"
+                  value={details}
+                  onChange={(e) => setDetails(e.target.value)}
+                />
+              </section>
+              <div>
+                <section className="price">
+                  <label htmlFor="price">Cena:</label>
+                  <h4>{price} PLN</h4>
+                  <FaLock />
+                </section>
+                <section className="price">
+                  <label htmlFor="provision">Prowizja:</label>
+                  <h4>{provision} PLN</h4>
+                  <FaLock />
+                </section>
+              </div>
+              <button className="reservebutton" type="submit">
+                <IoAddCircle />
+              </button>
+            </form>
+          )}
+        </>
+      )}
+      {specialTransfer ? (
+        <button
+          className="specialTransfer"
+          onClick={() => setSpecialTransfer(false)}
+          style={{ background: "#e9d7b6", color: "#111" }}
+        >
+          zmień na transfer zwykły
+        </button>
+      ) : (
+        <button
+          className="specialTransfer"
+          onClick={() => setSpecialTransfer(true)}
+          style={{ background: "#50708ccb" }}
+        >
+          zmień na transfer specjalny
+        </button>
+      )}
+      {specialTransfer && (
+        <p className="specialInfo">
+          Dodając transfer specjalny możesz ustalić własne ceny, prowizje oraz
+          liczbę osób. Przed rezerwacją porozmawiaj ze swoim opiekunem.{" "}
+        </p>
       )}
     </Wrapper>
   );
@@ -338,6 +488,10 @@ const Wrapper = styled.div`
       align-items: center;
       section {
         width: 49%;
+        p {
+          font-weight: 500;
+          margin-left: 10px;
+        }
       }
       :nth-of-type(2) {
         section {
@@ -355,7 +509,7 @@ const Wrapper = styled.div`
           }
         }
       }
-      @media screen and (max-width: 1500px) {
+      @media screen and (max-width: 2000px) {
         flex-wrap: wrap;
         section {
           width: 49%;
@@ -424,9 +578,10 @@ const Wrapper = styled.div`
       select {
         width: 50%;
         font-size: 1rem;
+        font-family: var(--textFont);
         font-weight: 600;
         text-transform: uppercase;
-        padding: 5px 10px;
+        padding: 3px 10px;
         flex-grow: 1;
         border: 2px solid var(--secondaryColor);
         border-radius: 5px;
@@ -440,14 +595,22 @@ const Wrapper = styled.div`
       background-color: var(--secondaryColor);
       text-align: center;
       justify-content: center;
+      position: relative;
       label,
       h4 {
         font-weight: 600;
         font-size: 1.1rem;
       }
+      svg {
+        position: absolute;
+        top: 50%;
+        right: 10%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
+      }
     }
   }
-  button {
+  .reservebutton {
     background: transparent;
     color: #fff;
     font-size: 3rem;
@@ -505,6 +668,111 @@ const Wrapper = styled.div`
           opacity: 1;
         }
       }
+    }
+  }
+  .specialForm {
+    input,
+    select {
+      border-color: var(--specialTransfser);
+    }
+    div {
+      flex-wrap: wrap;
+      .specialPrice {
+        position: relative;
+        @media screen and (max-width: 900px) {
+          flex-direction: row;
+          flex-wrap: wrap;
+          label {
+            width: 100%;
+            text-align: center;
+          }
+        }
+
+        input {
+          flex-grow: 0;
+          width: 50%;
+          @media screen and (max-width: 900px) {
+            width: 80%;
+          }
+        }
+        svg {
+          position: absolute;
+          right: 10%;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 1.2rem;
+          @media screen and (max-width: 900px) {
+            right: 5%;
+            top: 30%;
+          }
+        }
+      }
+      section {
+        width: 49%;
+        @media screen and (max-width: 900px) {
+          width: 100%;
+        }
+      }
+      :nth-of-type(2) {
+        section {
+          width: 49%;
+
+          :nth-of-type(1) {
+            width: 49%;
+          }
+          :nth-of-type(2) {
+            width: 49%;
+          }
+          :nth-of-type(3) {
+            width: 100%;
+          }
+          @media screen and (max-width: 900px) {
+            width: 100%;
+            :nth-of-type(1) {
+              width: 100%;
+            }
+            :nth-of-type(2) {
+              width: 100%;
+            }
+            :nth-of-type(3) {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+  .specialTransfer {
+    position: absolute;
+    right: 5vw;
+    bottom: 2vh;
+    background: #fff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: var(--textFont);
+    opacity: 0.8;
+    transition: 0.5s;
+    font-size: 0.8rem;
+    :hover {
+      opacity: 1;
+    }
+  }
+  .specialInfo {
+    position: absolute;
+    left: 3%;
+    width: 43vw;
+    bottom: 2vh;
+    color: #fff;
+    font-size: 0.9rem;
+    @media screen and (max-width: 900px) {
+      position: static;
+      width: 90vw;
+      margin: -2vh auto 14vh;
+      text-align: center;
     }
   }
 `;

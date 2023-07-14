@@ -663,7 +663,8 @@ const AppProvider = ({ children }) => {
     phone,
     price,
     provision,
-    createdDate
+    createdDate,
+    specialTransfer
   ) => {
     const setDocProductsCollectionRef = doc(
       collection(db, `usersList/${userID}/transfers`)
@@ -682,6 +683,7 @@ const AppProvider = ({ children }) => {
       price,
       provision,
       createdDate,
+      specialTransfer,
     });
     getProducts();
   };
