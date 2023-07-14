@@ -25,6 +25,38 @@ const hotelMenu = [
     video: "/instructionVideo/menu.webm",
   },
 ];
+const adminMenu = [
+  {
+    id: 1,
+    name: "menu",
+    video: "/instructionVideo/menu.webm",
+  },
+  {
+    id: 2,
+    name: "strona główna",
+    video: "/instructionVideo/menu.webm",
+  },
+  {
+    id: 3,
+    name: "lista transferów",
+    video: "/instructionVideo/menu.webm",
+  },
+  {
+    id: 4,
+    name: "zarządzanie hotelem",
+    video: "/instructionVideo/menu.webm",
+  },
+  {
+    id: 5,
+    name: "zyski i prowizje",
+    video: "/instructionVideo/menu.webm",
+  },
+  {
+    id: 6,
+    name: "export i inport danych",
+    video: "/instructionVideo/menu.webm",
+  },
+];
 
 const Instruction = ({ setShowInstruction }) => {
   const { isAdmin } = useGlobalContext();
@@ -48,7 +80,11 @@ const Instruction = ({ setShowInstruction }) => {
             <ul>
               {hotelMenu.map((item) => {
                 return (
-                  <li key={item.id} onClick={() => setActiveTip(item)}>
+                  <li
+                    key={item.id}
+                    onClick={() => setActiveTip(item)}
+                    className={activeTip === item ? "activeTip" : ""}
+                  >
                     {item.name}
                   </li>
                 );
@@ -139,14 +175,22 @@ const Wrapper = styled.div`
       width: 28%;
       padding: 2vh 0;
       border-right: 2px solid #222;
+
       li {
-        margin: 2vh auto;
+        margin-top: 2vh;
+        margin-bottom: 2vh;
         font-size: 1.1rem;
         cursor: pointer;
         transition: 0.4s;
+        width: 100%;
         :hover {
-          margin-left: 20px;
+          color: var(--secondaryColor);
         }
+      }
+      .activeTip {
+        color: var(--secondaryColor);
+        font-weight: 600;
+        margin-left: 20%;
       }
     }
   }
