@@ -51,15 +51,17 @@ const Wrapper = styled.footer`
     text-decoration: none;
     color: white;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: flex-end;
     font-size: 0.9rem;
     transition: 0.4s;
+    width: 25%;
     @media screen and (max-width: 900px) {
       width: 100vw;
       padding: 3vh 1vw;
       background-color: #000;
       font-weight: 600;
+      justify-content: center;
     }
     svg {
       margin-right: 10px;
@@ -71,10 +73,15 @@ const Wrapper = styled.footer`
   }
   .logoJarek {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     color: white;
     text-decoration: none;
+    width: 25%;
+    @media screen and (max-width: 900px) {
+      width: auto;
+      justify-content: center;
+    }
     img {
       width: 25px;
       height: 25px;

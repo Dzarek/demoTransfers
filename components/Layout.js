@@ -3,7 +3,6 @@ import { useGlobalContext } from "../components/context";
 import Login from "../components/auth/Login";
 import FirstLoading from "../components/FirstLoading";
 import Instruction from "../instruction/Instruction";
-// import LoginInstruction from "../instruction/LoginInstruction";
 
 const Layout = (props) => {
   const { currentUser } = useGlobalContext();
@@ -24,7 +23,6 @@ const Layout = (props) => {
         <>
           {!currentUser ? (
             <>
-              {/* <LoginInstruction /> */}
               <Login />
             </>
           ) : (

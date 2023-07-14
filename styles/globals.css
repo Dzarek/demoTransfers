@@ -174,3 +174,12 @@ html::-webkit-scrollbar-thumb:hover {
 .showInstructionBtn:hover {
     background: #222;
 }
+
+@media screen and (max-width: 1000px) {
+    .showInstructionBtn {
+        top: 30vh;
+        left: 0%;
+        transform: translateX(0);
+        border-radius: 0 0 5px 0;
+    }
+}

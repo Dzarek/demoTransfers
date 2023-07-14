@@ -60,7 +60,9 @@ const adminMenu = [
 
 const Instruction = ({ setShowInstruction }) => {
   const { isAdmin } = useGlobalContext();
-  const [activeTip, setActiveTip] = useState(hotelMenu[0]);
+  const [activeTip, setActiveTip] = useState(
+    isAdmin ? adminMenu[0] : hotelMenu[0]
+  );
 
   return (
     <Wrapper>
@@ -78,6 +80,7 @@ const Instruction = ({ setShowInstruction }) => {
         ) : (
           <div className="instructionWrapper">
             <ul>
+              <p>Wybierz kategorię:</p>
               {hotelMenu.map((item) => {
                 return (
                   <li
@@ -113,17 +116,11 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.8);
-  /* overflow-y: auto; */
   color: #222;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* @media screen and (max-width: 900px) {
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-  } */
+
   .bigContainer {
     width: 80vw;
     height: 80vh;
@@ -132,6 +129,13 @@ const Wrapper = styled.div`
     border: 5px solid var(--secondaryColor);
     border-radius: 5px;
     position: relative;
+    @media screen and (max-width: 1000px) {
+      width: 100vw;
+      min-height: 100vh;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+    }
   }
   .closeIcon {
     position: absolute;
@@ -158,6 +162,8 @@ const Wrapper = styled.div`
     letter-spacing: 2px;
     @media screen and (max-width: 1200px) {
       margin-top: 10vh;
+      font-size: 1.2rem;
+      margin-bottom: 5vh;
     }
   }
   .instructionWrapper {
@@ -167,7 +173,7 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     .video {
-      height: 40vh;
+      width: 65%;
       border: 1px solid #aaa;
       border-radius: 5px;
     }
@@ -175,6 +181,9 @@ const Wrapper = styled.div`
       width: 28%;
       padding: 2vh 0;
       border-right: 2px solid #222;
+      p {
+        margin-bottom: 5vh;
+      }
 
       li {
         margin-top: 2vh;
@@ -191,6 +200,22 @@ const Wrapper = styled.div`
         color: var(--secondaryColor);
         font-weight: 600;
         margin-left: 20%;
+      }
+    }
+    @media screen and (max-width: 1000px) {
+      flex-direction: column;
+      width: 95%;
+      .video {
+        height: auto;
+        width: 100%;
+        margin-top: 5vh;
+      }
+      ul {
+        width: 80%;
+        border-right: none;
+        p {
+          text-align: center;
+        }
       }
     }
   }

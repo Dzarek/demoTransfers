@@ -139,7 +139,6 @@ const Login = () => {
 
 const WrapperBG = styled.div`
   background-image: url(${loginBg});
-  /* background-size: cover; */
   background-position: bottom right;
   position: fixed;
   top: 50%;
