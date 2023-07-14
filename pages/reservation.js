@@ -355,6 +355,27 @@ const Wrapper = styled.div`
           }
         }
       }
+      @media screen and (max-width: 1500px) {
+        flex-wrap: wrap;
+        section {
+          width: 49%;
+        }
+        :nth-of-type(2) {
+          section {
+            width: 49%;
+
+            :nth-of-type(1) {
+              width: 49%;
+            }
+            :nth-of-type(2) {
+              width: 49%;
+            }
+            :nth-of-type(3) {
+              width: 100%;
+            }
+          }
+        }
+      }
       @media screen and (max-width: 900px) {
         flex-direction: column;
         section {
