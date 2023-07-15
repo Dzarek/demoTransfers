@@ -560,7 +560,7 @@ const Wrapper = styled.div`
       justify-content: flex-start;
       align-items: center;
       border-radius: 5px;
-      padding: 8px 12px;
+      padding: 5px 10px;
 
       @media screen and (max-width: 900px) {
         flex-direction: column;
@@ -596,17 +596,19 @@ const Wrapper = styled.div`
       text-align: center;
       justify-content: center;
       position: relative;
+      padding: 9px 10px;
+
       label,
       h4 {
         font-weight: 600;
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
       svg {
         position: absolute;
         top: 50%;
         right: 10%;
         transform: translateY(-50%);
-        font-size: 1.2rem;
+        font-size: 1rem;
       }
     }
   }
@@ -627,6 +629,7 @@ const Wrapper = styled.div`
       color: var(--secondaryColor);
     }
   }
+
   .sendFormInfo {
     color: white;
     font-size: 1.8rem;
@@ -690,7 +693,10 @@ const Wrapper = styled.div`
 
         input {
           flex-grow: 0;
-          width: 50%;
+          width: 40%;
+          @media screen and (max-width: 1300px) {
+            flex-grow: 1;
+          }
           @media screen and (max-width: 900px) {
             width: 80%;
           }
@@ -701,10 +707,13 @@ const Wrapper = styled.div`
           top: 50%;
           transform: translateY(-50%);
           font-size: 1.2rem;
-          @media screen and (max-width: 900px) {
+          @media screen and (max-width: 1300px) {
+            display: none;
+          }
+          /* @media screen and (max-width: 900px) {
             right: 5%;
             top: 30%;
-          }
+          } */
         }
       }
       section {

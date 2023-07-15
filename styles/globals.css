@@ -176,7 +176,7 @@ html::-webkit-scrollbar-thumb:hover {
     background: #222;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 900px) {
     .showInstructionBtn {
         top: 30vh;
         left: 0%;

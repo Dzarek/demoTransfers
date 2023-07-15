@@ -57,6 +57,7 @@ const TransfersList = ({ transfers }) => {
             phone,
             price,
             provision,
+            specialTransfer,
           } = item;
           const convertDate = moment(date).format("L");
           let t = time; // hh:mm
@@ -77,7 +78,13 @@ const TransfersList = ({ transfers }) => {
               key={id}
               data-aos="zoom-in"
             >
-              <li className={liClass} style={{ animation: classOld && "none" }}>
+              <li
+                className={liClass}
+                style={{
+                  animation: classOld && "none",
+                  borderColor: specialTransfer && "rgb(59, 122, 204)",
+                }}
+              >
                 {status === "ok" && (
                   <p className="status good">
                     <ImCheckboxChecked />
@@ -96,38 +103,68 @@ const TransfersList = ({ transfers }) => {
                 <div className="info">
                   <section>
                     <p>
-                      <IoCalendar />
+                      <IoCalendar
+                        style={{
+                          color: specialTransfer && "rgb(59, 122, 204)",
+                        }}
+                      />
                       {convertDate}
                     </p>
                     <p>
-                      <MdAccessTimeFilled />
+                      <MdAccessTimeFilled
+                        style={{
+                          color: specialTransfer && "rgb(59, 122, 204)",
+                        }}
+                      />
                       {time}
                     </p>
                   </section>
                   <section>
                     <p>
-                      <MdPerson />
+                      <MdPerson
+                        style={{
+                          color: specialTransfer && "rgb(59, 122, 204)",
+                        }}
+                      />
                       {nameOfGuest}
                     </p>
                   </section>
                   <section>
                     <p>
-                      <TbArrowsLeftRight />
+                      <TbArrowsLeftRight
+                        style={{
+                          color: specialTransfer && "rgb(59, 122, 204)",
+                        }}
+                      />
                       {direction}
                     </p>
                   </section>
                   <section>
                     <p>
-                      <IoBody /> {people}
+                      <IoBody
+                        style={{
+                          color: specialTransfer && "rgb(59, 122, 204)",
+                        }}
+                      />{" "}
+                      {people}
                     </p>
                     <p style={{ textTransform: "uppercase" }}>
-                      <MdOutlineAirplanemodeActive />
+                      <MdOutlineAirplanemodeActive
+                        style={{
+                          color: specialTransfer && "rgb(59, 122, 204)",
+                        }}
+                      />
                       {flight}
                     </p>
                   </section>
                   <section>
                     <p>
-                      <MdSmartphone />+{phone}
+                      <MdSmartphone
+                        style={{
+                          color: specialTransfer && "rgb(59, 122, 204)",
+                        }}
+                      />
+                      +{phone}
                     </p>
                   </section>
 
@@ -135,7 +172,10 @@ const TransfersList = ({ transfers }) => {
                     <section>
                       <p>
                         <MdInfo
-                          style={{ cursor: "pointer" }}
+                          style={{
+                            cursor: "pointer",
+                            color: specialTransfer && "rgb(59, 122, 204)",
+                          }}
                           onClick={() => setShowModal(id)}
                         />
                         <div
@@ -158,11 +198,19 @@ const TransfersList = ({ transfers }) => {
                   )}
                   <section>
                     <p>
-                      <GiMoneyStack />
+                      <GiMoneyStack
+                        style={{
+                          color: specialTransfer && "rgb(59, 122, 204)",
+                        }}
+                      />
                       {status !== "cancel" ? price : 0} PLN
                     </p>
                     <p>
-                      <GiReceiveMoney />
+                      <GiReceiveMoney
+                        style={{
+                          color: specialTransfer && "rgb(59, 122, 204)",
+                        }}
+                      />
                       {status !== "cancel" ? provision : 0} PLN
                     </p>
                   </section>
