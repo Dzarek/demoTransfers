@@ -682,6 +682,9 @@ const Wrapper = styled.div`
       flex-wrap: wrap;
       .specialPrice {
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         @media screen and (max-width: 900px) {
           flex-direction: row;
           flex-wrap: wrap;
@@ -692,28 +695,19 @@ const Wrapper = styled.div`
         }
 
         input {
-          flex-grow: 0;
+          flex-grow: 1;
           width: 40%;
-          @media screen and (max-width: 1300px) {
-            flex-grow: 1;
-          }
+
           @media screen and (max-width: 900px) {
             width: 80%;
           }
         }
         svg {
-          position: absolute;
-          right: 10%;
-          top: 50%;
-          transform: translateY(-50%);
           font-size: 1.2rem;
+          margin: 0 20px;
           @media screen and (max-width: 1300px) {
             display: none;
           }
-          /* @media screen and (max-width: 900px) {
-            right: 5%;
-            top: 30%;
-          } */
         }
       }
       section {
@@ -773,7 +767,7 @@ const Wrapper = styled.div`
   .specialInfo {
     position: absolute;
     left: 3%;
-    width: 43vw;
+    width: 40vw;
     bottom: 2vh;
     color: #fff;
     font-size: 0.9rem;
