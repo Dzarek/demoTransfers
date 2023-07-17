@@ -695,9 +695,13 @@ const AppProvider = ({ children }) => {
       const deletedItem = transfers.find((item) => item.id === deleteId);
       if (isAdmin) {
         deletedItem.status = "ok";
+        deletedItem.price = deletedItem.price;
+        deletedItem.provision = deletedItem.provision;
         deletedItem.createdDate = deletedItem.createdDate;
       } else {
         deletedItem.status = "cancel";
+        deletedItem.price = 0;
+        deletedItem.provision = 0;
         deletedItem.createdDate = moment().valueOf();
         const convertDate = moment(deletedItem.date).format("L");
         const dataNameOfGuest = deletedItem.nameOfGuest;
@@ -708,16 +712,27 @@ const AppProvider = ({ children }) => {
         (item) => item.id !== deleteId
       );
       setActiveTransfers(activeTransferArray);
-      putEdit(deleteId, deletedItem.status, deletedItem.createdDate);
+      putEdit(
+        deleteId,
+        deletedItem.status,
+        deletedItem.price,
+        deletedItem.provision,
+        deletedItem.createdDate
+      );
       setConfirmDelete(false);
     }
   };
   // END EDIT STATUS
 
   // UPDATE TRANSFER TO FIREBASE
-  const putEdit = async (editID, status, createdDate) => {
+  const putEdit = async (editID, status, price, provision, createdDate) => {
     const productDoc = doc(db, `usersList/${userID}/transfers`, editID);
-    const updatedProcuct = { status: status, createdDate: createdDate };
+    const updatedProcuct = {
+      status: status,
+      price: price,
+      provision: provision,
+      createdDate: createdDate,
+    };
     await updateDoc(productDoc, updatedProcuct);
   };
   // END UPDATE TRANSFER TO FIREBASE
