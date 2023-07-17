@@ -1,28 +1,30 @@
 import styled from "styled-components";
 import { MdOutlineClose } from "react-icons/md";
 import { useGlobalContext } from "../components/context";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 const hotelMenu = [
   {
     id: 1,
     name: "menu",
-    video: "/instructionVideo/menu.webm",
+    video: "/instructionVideo/menuUser.mp4",
   },
   {
     id: 2,
     name: "strona główna",
-    video: "/instructionVideo/menu.webm",
+    video: "/instructionVideo/mainPageUser.mp4",
   },
   {
     id: 3,
     name: "dodaj transfer",
-    video: "/instructionVideo/menu.webm",
+    video: "/instructionVideo/addTransferUser.mp4",
   },
   {
     id: 4,
     name: "lista transferów",
-    video: "/instructionVideo/menu.webm",
+    video: "/instructionVideo/transferListUser.mp4",
   },
 ];
 const adminMenu = [
@@ -64,6 +66,10 @@ const Instruction = ({ setShowInstruction }) => {
     isAdmin ? adminMenu[0] : hotelMenu[0]
   );
 
+  useEffect(() => {
+    Aos.init({ duration: 1000, offset: -100 });
+  }, []);
+
   return (
     <Wrapper>
       <div className="bigContainer">
@@ -94,6 +100,7 @@ const Instruction = ({ setShowInstruction }) => {
               })}
             </ul>
             <video
+              data-aos="zoom-in"
               src={activeTip.video}
               controls
               playsInline
