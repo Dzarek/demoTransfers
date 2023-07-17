@@ -239,7 +239,7 @@ const ReservationPage = () => {
                   <input
                     type="number"
                     value={price}
-                    onChange={(e) => setPrice(e.target.value)}
+                    onChange={(e) => setPrice(Number(e.target.value))}
                   />
                   <p> PLN</p>
                   <FaLockOpen />
@@ -249,7 +249,7 @@ const ReservationPage = () => {
                   <input
                     type="number"
                     value={provision}
-                    onChange={(e) => setProvision(e.target.value)}
+                    onChange={(e) => setProvision(Number(e.target.value))}
                   />
                   <p> PLN</p>
                   <FaLockOpen />
