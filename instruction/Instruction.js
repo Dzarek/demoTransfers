@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import { MdOutlineClose } from "react-icons/md";
 import { useGlobalContext } from "../components/context";
-import { useState, useEffect } from "react";
-import Aos from "aos";
-import "aos/dist/aos.css";
+import { useState } from "react";
 
 const hotelMenu = [
   {
@@ -66,10 +64,6 @@ const Instruction = ({ setShowInstruction }) => {
     isAdmin ? adminMenu[0] : hotelMenu[0]
   );
 
-  useEffect(() => {
-    Aos.init({ duration: 1000, offset: -100 });
-  }, []);
-
   return (
     <Wrapper>
       <div className="bigContainer">
@@ -100,7 +94,6 @@ const Instruction = ({ setShowInstruction }) => {
               })}
             </ul>
             <video
-              data-aos="zoom-in"
               src={activeTip.video}
               controls
               playsInline
@@ -137,11 +130,12 @@ const Wrapper = styled.div`
     border-radius: 5px;
     position: relative;
     @media screen and (max-width: 1000px) {
-      width: 100vw;
+      width: 100%;
       min-height: 100vh;
       top: 0;
       left: 0;
       overflow-y: auto;
+      padding: 20px 0;
     }
   }
   .closeIcon {
@@ -168,9 +162,9 @@ const Wrapper = styled.div`
     margin-bottom: 10vh;
     letter-spacing: 2px;
     @media screen and (max-width: 1200px) {
-      margin-top: 10vh;
       font-size: 1.2rem;
-      margin-bottom: 5vh;
+      width: 85vw;
+      margin: 10vh auto 5vh;
     }
   }
   .instructionWrapper {

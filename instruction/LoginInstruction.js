@@ -23,21 +23,21 @@ const LoginInstruction = ({ setEmail, setPassword }) => {
     {
       id: 2,
       icon: <RiAdminLine />,
-      name: "User 1",
+      name: "Użytkownik 1",
       login: "test1@test.com",
       password: "test01",
     },
     {
       id: 3,
       icon: <RiAdminLine />,
-      name: "User 2",
+      name: "Użytkownik 2",
       login: "test2@test.com",
       password: "test02",
     },
     {
       id: 4,
       icon: <RiAdminLine />,
-      name: "User 3",
+      name: "Użytkownik 3",
       login: "test3@test.com",
       password: "test03",
     },
@@ -56,7 +56,9 @@ const LoginInstruction = ({ setEmail, setPassword }) => {
             onClick={() => setShowModal(false)}
             className="closeBtn"
           />
-          <h2>Dane logowania dla wersji demo</h2>
+          <h2>
+            Dane logowania <br /> dla wersji demo
+          </h2>
           <div className="content">
             {logins.map((item) => {
               const { id, icon, name, login, password } = item;
@@ -93,8 +95,10 @@ const WrapperBtn = styled.button`
   }
   display: block;
   position: fixed;
-  top: 1vh;
-  left: 1vw;
+  top: 2vh;
+  left: 2vw;
+  top: 2dvh;
+  left: 2dvw;
   background: #ddd;
   color: #222;
   padding: 5px 10px;
@@ -107,21 +111,22 @@ const WrapperBtn = styled.button`
 
 const Wrapper = styled.div`
   .smallWrapper {
-    width: 22vw;
+    width: 20vw;
     height: 100vh;
     background: var(--secondaryColor);
     color: #222;
-    /* border-radius: 0 10px 10px 0; */
     position: fixed;
     top: 50%;
     left: 0%;
     transform: translateY(-50%);
     z-index: 1;
-    padding: 7vh 0 5vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    @media screen and (max-width: 1400px) {
+      width: 25vw;
+    }
     @media screen and (max-width: 1000px) {
       width: 95vw;
       height: 95vh;
@@ -153,28 +158,27 @@ const Wrapper = styled.div`
       text-align: center;
       font-size: 1.4rem;
       text-transform: uppercase;
-      /* margin-bottom: 10vh; */
       font-weight: 600;
       padding: 0 2vw;
       color: #fff;
+      margin-top: 5vh;
       @media screen and (max-width: 1000px) {
-        margin-top: 2vh;
+        margin-top: 7vh;
+        margin-bottom: -3vh;
+        font-size: 1.2rem;
       }
     }
-    .content {
-      padding: 0 1vw 0 1vw;
-      @media screen and (max-width: 1000px) {
-        padding: 0;
-        margin-left: -10vw;
-      }
-    }
+
     section {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       justify-content: space-between;
       width: 100%;
-      margin-top: 3vh;
+      margin-top: 4vh;
+      @media screen and (max-width: 1000px) {
+        margin-top: 2vh;
+      }
       h4 {
         display: flex;
         align-items: center;
@@ -202,6 +206,11 @@ const Wrapper = styled.div`
       ul {
         list-style: none;
         font-weight: 500;
+        li {
+          span {
+            color: #fff;
+          }
+        }
       }
     }
   }
