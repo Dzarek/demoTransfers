@@ -129,6 +129,7 @@ const Wrapper = styled.div`
     @media screen and (max-width: 1000px) {
       width: 95vw;
       height: 95vh;
+      height: 95dvh;
       left: 50%;
       transform: translate(-50%, -200%);
       border-radius: 10px;
