@@ -95,10 +95,9 @@ const WrapperBtn = styled.button`
   }
   display: block;
   position: absolute;
-  top: 3vh;
+  top: 2vh;
   left: 2vw;
-  top: 3dvh;
-  left: 2dvw;
+  top: 2dvh;
   background: #ddd;
   color: #222;
   padding: 5px 10px;

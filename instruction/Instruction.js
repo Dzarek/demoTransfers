@@ -110,9 +110,9 @@ const Instruction = ({ setShowInstruction }) => {
 const Wrapper = styled.div`
   z-index: 10000000000000000000000000;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  /* transform: translate(-50%, -50%); */
   width: 100vw;
   height: 100vh;
   height: 100dvh;
@@ -121,23 +121,22 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
+  /* overflow-x: hidden; */
   .bigContainer {
     width: 80vw;
     height: 80vh;
-    /* padding: 20px; */
+    padding: 20px;
     background: white;
     border: 5px solid var(--secondaryColor);
     border-radius: 5px;
     position: relative;
     @media screen and (max-width: 1000px) {
       width: 100%;
-      min-height: 100vh;
-      min-height: 100dvh;
+      min-height: 100%;
       top: 0;
       left: 0;
       overflow-y: auto;
-      padding: 20px 0;
+      padding: 0;
     }
   }
   .closeIcon {
@@ -177,6 +176,7 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    overflow-x: hidden;
     .video {
       width: 65%;
       border: 1px solid #aaa;
@@ -209,7 +209,8 @@ const Wrapper = styled.div`
     }
     @media screen and (max-width: 1000px) {
       flex-direction: column;
-      width: 95%;
+      /* width: 95%; */
+
       .video {
         height: auto;
         width: 100%;

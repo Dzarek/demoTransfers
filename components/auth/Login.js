@@ -146,6 +146,7 @@ const WrapperBG = styled.div`
   transform: translate(-50%, -50%);
   width: 100vw;
   min-height: 100vh;
+  min-height: 100dvh;
   animation: bgMove 15s linear infinite alternate;
   @keyframes bgMove {
     0% {
