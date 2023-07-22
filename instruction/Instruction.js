@@ -140,8 +140,9 @@ const Wrapper = styled.div`
   }
   .closeIcon {
     position: absolute;
-    top: 5%;
-    right: 5%;
+    top: 5vh;
+    top: 5dvh;
+    right: 5vw;
     font-size: 2.5rem;
     color: var(--secondaryColor);
     transition: 0.4s;
@@ -150,7 +151,8 @@ const Wrapper = styled.div`
       transform: rotate(180deg);
     }
     @media screen and (max-width: 1200px) {
-      top: 2%;
+      top: 3vh;
+      top: 3dvh;
     }
   }
   h1 {
