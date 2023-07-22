@@ -115,6 +115,7 @@ const Wrapper = styled.div`
   transform: translate(-50%, -50%);
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   background: rgba(0, 0, 0, 0.8);
   color: #222;
   display: flex;
@@ -132,6 +133,7 @@ const Wrapper = styled.div`
     @media screen and (max-width: 1000px) {
       width: 100%;
       min-height: 100vh;
+      min-height: 100dvh;
       top: 0;
       left: 0;
       overflow-y: auto;

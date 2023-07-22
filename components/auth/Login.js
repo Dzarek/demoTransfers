@@ -168,6 +168,7 @@ const Wrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.9);
   width: 100vw;
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 50px 20px;
   display: flex;
   flex-direction: column;
