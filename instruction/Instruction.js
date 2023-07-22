@@ -125,7 +125,7 @@ const Wrapper = styled.div`
   .bigContainer {
     width: 80vw;
     height: 80vh;
-    padding: 20px;
+    /* padding: 20px; */
     background: white;
     border: 5px solid var(--secondaryColor);
     border-radius: 5px;
