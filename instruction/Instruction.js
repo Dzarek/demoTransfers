@@ -7,54 +7,54 @@ const hotelMenu = [
   {
     id: 1,
     name: "menu",
-    video: "/instructionVideo/menuUser.mp4",
+    video: "/instructionVideo/user/menuUser.mp4",
   },
   {
     id: 2,
     name: "strona główna",
-    video: "/instructionVideo/mainPageUser.mp4",
+    video: "/instructionVideo/user/mainPageUser.mp4",
   },
   {
     id: 3,
     name: "dodaj transfer",
-    video: "/instructionVideo/addTransferUser.mp4",
+    video: "/instructionVideo/user/addTransferUser.mp4",
   },
   {
     id: 4,
     name: "lista transferów",
-    video: "/instructionVideo/transferListUser.mp4",
+    video: "/instructionVideo/user/transferListUser.mp4",
   },
 ];
 const adminMenu = [
   {
     id: 1,
     name: "menu",
-    video: "/instructionVideo/menu.webm",
+    video: "/instructionVideo/admin/menuAdmin.mp4",
   },
   {
     id: 2,
     name: "strona główna",
-    video: "/instructionVideo/menu.webm",
+    video: "/instructionVideo/admin/mainPageAdmin.mp4",
   },
   {
     id: 3,
-    name: "lista transferów",
-    video: "/instructionVideo/menu.webm",
+    name: "zyski i prowizje",
+    video: "/instructionVideo/admin/moneyAdmin.mp4",
   },
   {
     id: 4,
-    name: "zarządzanie hotelem",
-    video: "/instructionVideo/menu.webm",
+    name: "ustawienia",
+    video: "/instructionVideo/admin/settingsAdmin.mp4",
   },
   {
     id: 5,
-    name: "zyski i prowizje",
-    video: "/instructionVideo/menu.webm",
+    name: "lista transferów",
+    video: "/instructionVideo/admin/transfersAdmin.mp4",
   },
   {
     id: 6,
-    name: "export i inport danych",
-    video: "/instructionVideo/menu.webm",
+    name: "zarządzanie hotelem",
+    video: "/instructionVideo/admin/hotelsettingsAdmin.mp4",
   },
 ];
 
@@ -76,7 +76,29 @@ const Instruction = ({ setShowInstruction }) => {
           <br /> dla {isAdmin ? "ADMINISTRATORA" : "HOTELU"}
         </h1>
         {isAdmin ? (
-          <div className="instructionWrapper"></div>
+          <div className="instructionWrapper">
+            <ul>
+              <p>Wybierz kategorię:</p>
+              {adminMenu.map((item) => {
+                return (
+                  <li
+                    key={item.id}
+                    onClick={() => setActiveTip(item)}
+                    className={activeTip === item ? "activeTip" : ""}
+                  >
+                    {item.name}
+                  </li>
+                );
+              })}
+            </ul>
+            <video
+              src={activeTip.video}
+              controls
+              playsInline
+              type="video/mp4"
+              className="video"
+            ></video>
+          </div>
         ) : (
           <div className="instructionWrapper">
             <ul>
@@ -207,10 +229,27 @@ const Wrapper = styled.div`
         margin-left: 20%;
       }
     }
+    @media screen and (max-width: 1300px) {
+      width: 95%;
+      ul {
+        li {
+          font-size: 0.95rem;
+        }
+        .activeTip {
+          margin-left: 10%;
+        }
+      }
+    }
     @media screen and (max-width: 1000px) {
       flex-direction: column;
-      /* width: 95%; */
-
+      ul {
+        li {
+          font-size: 1.1rem;
+        }
+        .activeTip {
+          margin-left: 20%;
+        }
+      }
       .video {
         height: auto;
         width: 100%;
