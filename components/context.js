@@ -500,8 +500,11 @@ const AppProvider = ({ children }) => {
       const lastAdded = homePagetransfers.filter((item) => {
         return item.createdDate > moment().subtract(1, "days").valueOf();
       });
+      const lastAdded2 = lastAdded.filter((item) => {
+        return item.status !== "cancel";
+      });
 
-      setLastAddedTransfers(lastAdded);
+      setLastAddedTransfers(lastAdded2);
       // END NEXT TRANSFERS
     }
   };
