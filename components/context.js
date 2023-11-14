@@ -510,13 +510,13 @@ const AppProvider = ({ children }) => {
         const secondDate = new Date(b.date).getTime() + msB;
         return firstDate - secondDate;
       });
-      // setAllUsersTransfers(sortedTransfers);
+      setAllUsersTransfers(sortedTransfers);
 
       // END SORT
 
       // NEXT TRANSFERS
-      const homePagetransfers = sortedTransfers.filter((item) => {
-        // const homePagetransfers = allUsersTransfers.filter((item) => {
+      // const homePagetransfers = sortedTransfers.filter((item) => {
+      const homePagetransfers = allUsersTransfers.filter((item) => {
         let t = item.time; // hh:mm
         let ms =
           Number(t.split(":")[0]) * 60 * 60 * 1000 +
@@ -688,7 +688,7 @@ const AppProvider = ({ children }) => {
       setMonthProvision(0);
       setMonthAdminEarn(0);
     }
-  }, [activeTransfers, userID, allUsersTransfers]);
+  }, [activeTransfers, userID]);
   // END SUM PROVISION AND NEXT 5 TRANSFERS FOR USER
 
   // POST TRANSFER TO FIREBASE
