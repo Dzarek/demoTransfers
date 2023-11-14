@@ -245,45 +245,45 @@ const AppProvider = ({ children }) => {
         db,
         `usersList/${el.id}/transfers`
       );
-      // const allUsersData = await getDocs(allUsersCollectionData);
+      const allUsersData = await getDocs(allUsersCollectionData);
 
-      // const itemsAllUsers = allUsersData.docs.map((doc) => ({
-      //   ...doc.data(),
-      //   id: doc.id,
-      // }));
-      onSnapshot(allUsersCollectionData, (snapshot) => {
-        const itemsAllUsers = snapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        const itemsArray = [];
-        itemsAllUsers.map((item) => {
-          itemsArray.push(item);
-        });
-        bigItemsArray.push(...itemsArray);
-        backupArray.push({
-          id: el.id,
-          name: el.userName,
-          money: el.money,
-          itemsArray,
-        });
-        setAllUsersTransfers(bigItemsArray);
-        setDownloadData(backupArray);
+      const itemsAllUsers = allUsersData.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      // onSnapshot(allUsersCollectionData, (snapshot) => {
+      //   const itemsAllUsers = snapshot.docs.map((doc) => ({
+      //     ...doc.data(),
+      //     id: doc.id,
+      //   }));
+      //   const itemsArray = [];
+      //   itemsAllUsers.map((item) => {
+      //     itemsArray.push(item);
+      //   });
+      //   bigItemsArray.push(...itemsArray);
+      //   backupArray.push({
+      //     id: el.id,
+      //     name: el.userName,
+      //     money: el.money,
+      //     itemsArray,
+      //   });
+      //   setAllUsersTransfers(bigItemsArray);
+      //   setDownloadData(backupArray);
+      // });
+
+      const itemsArray = [];
+      itemsAllUsers.map((item) => {
+        itemsArray.push(item);
       });
-
-      // const itemsArray = [];
-      // itemsAllUsers.map((item) => {
-      //   itemsArray.push(item);
-      // });
-      // bigItemsArray.push(...itemsArray);
-      // backupArray.push({
-      //   id: el.id,
-      //   name: el.userName,
-      //   money: el.money,
-      //   itemsArray,
-      // });
-      // setAllUsersTransfers(bigItemsArray);
-      // setDownloadData(backupArray);
+      bigItemsArray.push(...itemsArray);
+      backupArray.push({
+        id: el.id,
+        name: el.userName,
+        money: el.money,
+        itemsArray,
+      });
+      setAllUsersTransfers(bigItemsArray);
+      setDownloadData(backupArray);
     });
   };
 
@@ -444,6 +444,12 @@ const AppProvider = ({ children }) => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (isAdmin) {
+      getAllUsers();
+    }
+  }, [transfers]);
 
   useEffect(() => {
     if (currentUser) {
