@@ -9,6 +9,7 @@ import {
   updateDoc,
   doc,
   deleteDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
@@ -245,10 +246,31 @@ const AppProvider = ({ children }) => {
         `usersList/${el.id}/transfers`
       );
       const allUsersData = await getDocs(allUsersCollectionData);
+
       const itemsAllUsers = allUsersData.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
       }));
+      // onSnapshot(allUsersCollectionData, (snapshot) => {
+      //   const itemsAllUsers = snapshot.docs.map((doc) => ({
+      //     ...doc.data(),
+      //     id: doc.id,
+      //   }));
+      //   const itemsArray = [];
+      //   itemsAllUsers.map((item) => {
+      //     itemsArray.push(item);
+      //   });
+      //   bigItemsArray.push(...itemsArray);
+      //   backupArray.push({
+      //     id: el.id,
+      //     name: el.userName,
+      //     money: el.money,
+      //     itemsArray,
+      //   });
+      //   setAllUsersTransfers(bigItemsArray);
+      //   setDownloadData(backupArray);
+      // });
+
       const itemsArray = [];
       itemsAllUsers.map((item) => {
         itemsArray.push(item);
@@ -396,17 +418,33 @@ const AppProvider = ({ children }) => {
       }
     }
     try {
-      const data = await getDocs(getProductsCollectionRefOneUser);
-      const items = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      if (items.length > 0) {
-        setTransfers(items);
-      } else {
-        setTransfers([]);
-      }
+      // const data = await getDocs(getProductsCollectionRefOneUser);
+      // const items = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      // if (items.length > 0) {
+      //   setTransfers(items);
+      // } else {
+      //   setTransfers([]);
+      // }
+
+      // Jak będzie za dużo strzałów do API to zmienić na to wyżej
+      onSnapshot(getProductsCollectionRefOneUser, (snapshot) => {
+        const items = snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+
+        if (items.length > 0) {
+          setTransfers(items);
+        } else {
+          setTransfers([]);
+        }
+      });
+      //
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     if (currentUser) {
       getProducts();
@@ -472,12 +510,13 @@ const AppProvider = ({ children }) => {
         const secondDate = new Date(b.date).getTime() + msB;
         return firstDate - secondDate;
       });
-      setAllUsersTransfers(sortedTransfers);
+      // setAllUsersTransfers(sortedTransfers);
 
       // END SORT
 
       // NEXT TRANSFERS
-      const homePagetransfers = allUsersTransfers.filter((item) => {
+      const homePagetransfers = sortedTransfers.filter((item) => {
+        // const homePagetransfers = allUsersTransfers.filter((item) => {
         let t = item.time; // hh:mm
         let ms =
           Number(t.split(":")[0]) * 60 * 60 * 1000 +
@@ -510,8 +549,8 @@ const AppProvider = ({ children }) => {
   };
   useEffect(() => {
     updateAdminHomePage();
-  }, [loading, transfers]);
-
+  }, [loading, allUsersTransfers]);
+  // console.log(allUsersTransfers);
   // END  SORT BY DATE ALL USERS TRANSFERS FOR 24 HOURS FOR ADMIN
 
   // SUM PROVISION AND NEXT 5 TRANSFERS FOR USER
@@ -649,7 +688,7 @@ const AppProvider = ({ children }) => {
       setMonthProvision(0);
       setMonthAdminEarn(0);
     }
-  }, [activeTransfers, userID]);
+  }, [activeTransfers, userID, allUsersTransfers]);
   // END SUM PROVISION AND NEXT 5 TRANSFERS FOR USER
 
   // POST TRANSFER TO FIREBASE
