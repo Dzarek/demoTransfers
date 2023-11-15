@@ -239,51 +239,38 @@ const AppProvider = ({ children }) => {
     items = items.filter((el) => el.activeAccount === true);
     setAllUsersList(items);
 
-    const bigItemsArray = [];
+    let bigItemsArray = [];
     items.map(async (el) => {
       const allUsersCollectionData = collection(
         db,
         `usersList/${el.id}/transfers`
       );
-      const allUsersData = await getDocs(allUsersCollectionData);
+      onSnapshot(allUsersCollectionData, (snapshot) => {
+        const itemsAllUsers = snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        const itemsArray = [];
+        itemsAllUsers.map((item) => {
+          itemsArray.push(item);
+        });
+        bigItemsArray.push(...itemsArray);
+        backupArray.push({
+          id: el.id,
+          name: el.userName,
+          money: el.money,
+          itemsArray,
+        });
+        setDownloadData(backupArray);
 
-      const itemsAllUsers = allUsersData.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      // onSnapshot(allUsersCollectionData, (snapshot) => {
-      //   const itemsAllUsers = snapshot.docs.map((doc) => ({
-      //     ...doc.data(),
-      //     id: doc.id,
-      //   }));
-      //   const itemsArray = [];
-      //   itemsAllUsers.map((item) => {
-      //     itemsArray.push(item);
-      //   });
-      //   bigItemsArray.push(...itemsArray);
-      //   backupArray.push({
-      //     id: el.id,
-      //     name: el.userName,
-      //     money: el.money,
-      //     itemsArray,
-      //   });
-      //   setAllUsersTransfers(bigItemsArray);
-      //   setDownloadData(backupArray);
-      // });
+        const uniqueitemsArray = [
+          ...new Map(bigItemsArray.map((item) => [item["id"], item])).values(),
+        ];
 
-      const itemsArray = [];
-      itemsAllUsers.map((item) => {
-        itemsArray.push(item);
+        // console.log(uniqueitemsArray);
+        setAllUsersTransfers(uniqueitemsArray);
+        updateAdminHomePage(uniqueitemsArray);
       });
-      bigItemsArray.push(...itemsArray);
-      backupArray.push({
-        id: el.id,
-        name: el.userName,
-        money: el.money,
-        itemsArray,
-      });
-      setAllUsersTransfers(bigItemsArray);
-      setDownloadData(backupArray);
     });
   };
 
@@ -418,13 +405,13 @@ const AppProvider = ({ children }) => {
       }
     }
     try {
-      // const data = await getDocs(getProductsCollectionRefOneUser);
-      // const items = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      // if (items.length > 0) {
-      //   setTransfers(items);
-      // } else {
-      //   setTransfers([]);
-      // }
+      const data = await getDocs(getProductsCollectionRefOneUser);
+      const items = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      if (items.length > 0) {
+        setTransfers(items);
+      } else {
+        setTransfers([]);
+      }
 
       // Jak będzie za dużo strzałów do API to zmienić na to wyżej
       onSnapshot(getProductsCollectionRefOneUser, (snapshot) => {
@@ -444,12 +431,6 @@ const AppProvider = ({ children }) => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    if (isAdmin) {
-      getAllUsers();
-    }
-  }, [transfers]);
 
   useEffect(() => {
     if (currentUser) {
@@ -500,10 +481,10 @@ const AppProvider = ({ children }) => {
   }, [transfers]);
   //  END SORT BY DATE USER
   //  SORT BY DATE ALL USERS TRANSFERS FOR 24 HOURS FOR ADMIN
-  const updateAdminHomePage = () => {
-    if (isAdmin && allUsersTransfers.length > 0) {
+  const updateAdminHomePage = (uniqueitemsArray) => {
+    if (isAdmin && uniqueitemsArray.length > 0) {
       // SORT
-      const sortedTransfers = allUsersTransfers.sort((a, b) => {
+      const sortedTransfers = uniqueitemsArray.sort((a, b) => {
         let tA = a.time; // hh:mm
         let msA =
           Number(tA.split(":")[0]) * 60 * 60 * 1000 +
@@ -516,13 +497,11 @@ const AppProvider = ({ children }) => {
         const secondDate = new Date(b.date).getTime() + msB;
         return firstDate - secondDate;
       });
-      setAllUsersTransfers(sortedTransfers);
 
       // END SORT
 
       // NEXT TRANSFERS
-      // const homePagetransfers = sortedTransfers.filter((item) => {
-      const homePagetransfers = allUsersTransfers.filter((item) => {
+      const homePagetransfers = sortedTransfers.filter((item) => {
         let t = item.time; // hh:mm
         let ms =
           Number(t.split(":")[0]) * 60 * 60 * 1000 +
@@ -541,7 +520,6 @@ const AppProvider = ({ children }) => {
       setNext5Transfers(
         adminHomePageTransfers.filter((item) => item.status !== "cancel")
       );
-
       const lastAdded = homePagetransfers.filter((item) => {
         return item.createdDate > moment().subtract(1, "days").valueOf();
       });
@@ -553,10 +531,7 @@ const AppProvider = ({ children }) => {
       // END NEXT TRANSFERS
     }
   };
-  useEffect(() => {
-    updateAdminHomePage();
-  }, [loading, allUsersTransfers]);
-  // console.log(allUsersTransfers);
+
   // END  SORT BY DATE ALL USERS TRANSFERS FOR 24 HOURS FOR ADMIN
 
   // SUM PROVISION AND NEXT 5 TRANSFERS FOR USER
