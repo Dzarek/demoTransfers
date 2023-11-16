@@ -274,47 +274,41 @@ const AppProvider = ({ children }) => {
 
   // NOTIFICATION NEW TRANSFER
   const notification = (uniqueitemsArray) => {
-    if (isAdmin && uniqueitemsArray.length > 0) {
-      const newAddedTransfer = uniqueitemsArray.find((item) => {
-        return (
-          item.createdDate < Date.now() &&
-          item.createdDate > moment().subtract(10, "seconds").valueOf()
-        );
-      });
-      // console.log(newAddedTransfer);
-      Notification.requestPermission().then((perm) => {
+    Notification.requestPermission().then((perm) => {
+      if (isAdmin && uniqueitemsArray.length > 0) {
+        const newAddedTransfer = uniqueitemsArray.find((item) => {
+          return (
+            item.createdDate < Date.now() &&
+            item.createdDate > moment().subtract(10, "seconds").valueOf()
+          );
+        });
+        // console.log(newAddedTransfer);
         if (
           perm === "granted" &&
           newAddedTransfer !== undefined &&
           newAddedTransfer.status === "pending"
         ) {
-          const notify = new Notification("Dodano nowy transfer", {
+          new Notification("Dodano nowy transfer", {
             body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
             icon: "logo192.png",
             tag: newAddedTransfer.id,
             vibrate: [200, 100, 200],
           });
-          // setTimeout(() => {
-          //   notify.close();
-          // }, 3000);
         }
         if (
           perm === "granted" &&
           newAddedTransfer !== undefined &&
           newAddedTransfer.status === "cancel"
         ) {
-          const notify = new Notification("Anulowano transfer", {
+          new Notification("Anulowano transfer", {
             body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
             icon: "logo192.png",
             tag: newAddedTransfer.id,
             vibrate: [200, 100, 200],
           });
-          // setTimeout(() => {
-          //   notify.close();
-          // }, 3000);
         }
-      });
-    }
+      }
+    });
     // END NOTIFICATION NEW TRANSFER
   };
 
