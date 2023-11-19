@@ -309,14 +309,33 @@ const AppProvider = ({ children }) => {
         newAddedTransfer !== undefined &&
         newAddedTransfer.status === "pending"
       ) {
-        navigator.serviceWorker.ready.then(function (registration) {
-          registration.showNotification("Dodano nowy transfer", {
-            body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
-            icon: "logo192.png",
-            tag: newAddedTransfer.id,
-            vibrate: [200, 100, 200],
-          });
-        });
+        // navigator.serviceWorker.ready.then(function (registration) {
+        //   registration.showNotification("Dodano nowy transfer", {
+        //     body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
+        //     icon: "logo192.png",
+        //     tag: newAddedTransfer.id,
+        //     vibrate: [200, 100, 200],
+        //   });
+        // });
+        navigator.serviceWorker.ready
+          .then((registration) => registration.sync.register("syncAttendees"))
+          .then(() => console.log("Registered background sync"))
+          .catch((err) =>
+            console.error("Error registering background sync", err)
+          );
+        function syncAttendees() {
+          return update({ url: `https://demo-transfers.vercel.app` })
+            .then(refresh)
+            .then(() =>
+              self.registration.showNotification("Dodano nowy transfer", {
+                body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
+                icon: "logo192.png",
+                tag: newAddedTransfer.id,
+                vibrate: [200, 100, 200],
+              })
+            );
+        }
+        syncAttendees();
       }
       if (
         Notification.permission === "granted" &&
@@ -368,7 +387,7 @@ const AppProvider = ({ children }) => {
     //     }
     //   }
     // });
-    // END NOTIFICATION NEW TRANSFERS
+    // END NOTIFICATION NEW TRANSFER
   };
 
   // DOWNLOAD DATA
