@@ -306,50 +306,33 @@ const AppProvider = ({ children }) => {
       });
       if (
         Notification.permission === "granted" &&
-        newAddedTransfer !== undefined &&
-        newAddedTransfer.status === "pending"
+        newAddedTransfer !== undefined
       ) {
-        // navigator.serviceWorker.ready.then(function (registration) {
-        //   registration.showNotification("Dodano nowy transfer", {
-        //     body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
-        //     icon: "logo192.png",
-        //     tag: newAddedTransfer.id,
-        //     vibrate: [200, 100, 200],
-        //   });
-        // });
-        navigator.serviceWorker.ready
-          .then((registration) => registration.sync.register("syncAttendees"))
-          .then(() => console.log("Registered background sync"))
-          .catch((err) =>
-            console.error("Error registering background sync", err)
-          );
-        function syncAttendees() {
-          return update({ url: `https://demo-transfers.vercel.app` })
-            .then(refresh)
-            .then(() =>
-              self.registration.showNotification("Dodano nowy transfer", {
-                body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
-                icon: "logo192.png",
-                tag: newAddedTransfer.id,
-                vibrate: [200, 100, 200],
-              })
-            );
-        }
-        syncAttendees();
-      }
-      if (
-        Notification.permission === "granted" &&
-        newAddedTransfer !== undefined &&
-        newAddedTransfer.status === "cancel"
-      ) {
-        navigator.serviceWorker.ready.then(function (registration) {
-          registration.showNotification("Anulowano transfer", {
-            body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
-            icon: "logo192.png",
-            tag: newAddedTransfer.id,
-            vibrate: [200, 100, 200],
+        let hotelName = newAddedTransfer.direction.replace(
+          "Kraków Airport",
+          ""
+        );
+        hotelName = hotelName.replace(" - ", "").toUpperCase();
+        if (newAddedTransfer.status === "pending") {
+          navigator.serviceWorker.ready.then(function (registration) {
+            registration.showNotification(`${hotelName} dodał transfer`, {
+              body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
+              icon: "logo192.png",
+              tag: newAddedTransfer.id,
+              vibrate: [200, 100, 200],
+            });
           });
-        });
+        }
+        if (newAddedTransfer.status === "cancel") {
+          navigator.serviceWorker.ready.then(function (registration) {
+            registration.showNotification(`${hotelName} anulował transfer`, {
+              body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
+              icon: "logo192.png",
+              tag: newAddedTransfer.id,
+              vibrate: [200, 100, 200],
+            });
+          });
+        }
       }
     }
     // Notification.requestPermission().then((perm) => {
