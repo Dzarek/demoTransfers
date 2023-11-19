@@ -368,7 +368,7 @@ const AppProvider = ({ children }) => {
     //     }
     //   }
     // });
-    // END NOTIFICATION NEW TRANSFER
+    // END NOTIFICATION NEW TRANSFERS
   };
 
   // DOWNLOAD DATA
