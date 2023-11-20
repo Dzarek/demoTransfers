@@ -333,6 +333,29 @@ const AppProvider = ({ children }) => {
             });
           });
         }
+        self.addEventListener("notificationclick", (event) => {
+          event.notification.close();
+
+          // User selected (e.g., clicked in) the main body of notification.
+          clients.openWindow("https://demo-transfers.vercel.app");
+        });
+      }
+    }
+
+    // END NOTIFICATION NEW TRANSFER
+  };
+  const notification2 = (items) => {
+    if (items.length > 0) {
+      const newAddedTransfer = items.find((item) => {
+        return (
+          item.createdDate < Date.now() &&
+          item.createdDate > moment().subtract(10, "seconds").valueOf()
+        );
+      });
+      if (
+        Notification.permission === "granted" &&
+        newAddedTransfer !== undefined
+      ) {
         if (!isAdmin && newAddedTransfer.status === "ok") {
           navigator.serviceWorker.ready.then(function (registration) {
             registration.showNotification("Potwierdzono transfer!", {
@@ -343,16 +366,12 @@ const AppProvider = ({ children }) => {
             });
           });
         }
-        self.addEventListener(
-          "notificationclick",
-          (event) => {
-            event.notification.close();
+        self.addEventListener("notificationclick", (event) => {
+          event.notification.close();
 
-            // User selected (e.g., clicked in) the main body of notification.
-            clients.openWindow("https://demo-transfers.vercel.app");
-          },
-          false
-        );
+          // User selected (e.g., clicked in) the main body of notification.
+          clients.openWindow("https://demo-transfers.vercel.app");
+        });
       }
     }
 
@@ -507,7 +526,7 @@ const AppProvider = ({ children }) => {
 
         if (items.length > 0) {
           setTransfers(items);
-          notification(items);
+          notification2(items);
         } else {
           setTransfers([]);
         }
