@@ -297,7 +297,7 @@ const AppProvider = ({ children }) => {
 
   // NOTIFICATION NEW TRANSFER
   const notification = (uniqueitemsArray) => {
-    if (isAdmin && uniqueitemsArray.length > 0) {
+    if (uniqueitemsArray.length > 0) {
       const newAddedTransfer = uniqueitemsArray.find((item) => {
         return (
           item.createdDate < Date.now() &&
@@ -313,7 +313,7 @@ const AppProvider = ({ children }) => {
           ""
         );
         hotelName = hotelName.replace(" - ", "").toUpperCase();
-        if (newAddedTransfer.status === "pending") {
+        if (isAdmin && newAddedTransfer.status === "pending") {
           navigator.serviceWorker.ready.then(function (registration) {
             registration.showNotification(`${hotelName} dodał transfer`, {
               body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
@@ -323,7 +323,7 @@ const AppProvider = ({ children }) => {
             });
           });
         }
-        if (newAddedTransfer.status === "cancel") {
+        if (isAdmin && newAddedTransfer.status === "cancel") {
           navigator.serviceWorker.ready.then(function (registration) {
             registration.showNotification(`${hotelName} anulował transfer`, {
               body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
@@ -333,43 +333,29 @@ const AppProvider = ({ children }) => {
             });
           });
         }
+        if (!isAdmin && newAddedTransfer.status === "ok") {
+          navigator.serviceWorker.ready.then(function (registration) {
+            registration.showNotification("Potwierdzono transfer!", {
+              body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
+              icon: "logo192.png",
+              tag: newAddedTransfer.id,
+              vibrate: [200, 100, 200],
+            });
+          });
+        }
+        self.addEventListener(
+          "notificationclick",
+          (event) => {
+            event.notification.close();
+
+            // User selected (e.g., clicked in) the main body of notification.
+            clients.openWindow("https://demo-transfers.vercel.app");
+          },
+          false
+        );
       }
     }
-    // Notification.requestPermission().then((perm) => {
-    //   if (isAdmin && uniqueitemsArray.length > 0) {
-    //     const newAddedTransfer = uniqueitemsArray.find((item) => {
-    //       return (
-    //         item.createdDate < Date.now() &&
-    //         item.createdDate > moment().subtract(10, "seconds").valueOf()
-    //       );
-    //     });
-    //     // console.log(newAddedTransfer);
-    //     if (
-    //       perm === "granted" &&
-    //       newAddedTransfer !== undefined &&
-    //       newAddedTransfer.status === "pending"
-    //     ) {
-    //       new Notification("Dodano nowy transfer", {
-    //         body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
-    //         icon: "logo192.png",
-    //         tag: newAddedTransfer.id,
-    //         vibrate: [200, 100, 200],
-    //       });
-    //     }
-    //     if (
-    //       perm === "granted" &&
-    //       newAddedTransfer !== undefined &&
-    //       newAddedTransfer.status === "cancel"
-    //     ) {
-    //       new Notification("Anulowano transfer", {
-    //         body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
-    //         icon: "logo192.png",
-    //         tag: newAddedTransfer.id,
-    //         vibrate: [200, 100, 200],
-    //       });
-    //     }
-    //   }
-    // });
+
     // END NOTIFICATION NEW TRANSFER
   };
 
@@ -521,6 +507,7 @@ const AppProvider = ({ children }) => {
 
         if (items.length > 0) {
           setTransfers(items);
+          notification(items);
         } else {
           setTransfers([]);
         }
@@ -819,7 +806,8 @@ const AppProvider = ({ children }) => {
         deletedItem.status = "ok";
         deletedItem.price = deletedItem.price;
         deletedItem.provision = deletedItem.provision;
-        deletedItem.createdDate = deletedItem.createdDate;
+        // deletedItem.createdDate = deletedItem.createdDate;
+        deletedItem.createdDate = moment().valueOf();
       } else {
         deletedItem.status = "cancel";
         deletedItem.price = 0;
