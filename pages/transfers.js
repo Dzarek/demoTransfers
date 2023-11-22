@@ -43,6 +43,7 @@ const TransfersPage = () => {
 
   useEffect(() => {
     Aos.init({ duration: 1000, offset: -100 });
+    setActiveHotel(null);
   }, []);
 
   const firstTransfer = transfers.find(
