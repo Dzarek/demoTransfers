@@ -267,116 +267,116 @@ const AppProvider = ({ children }) => {
         ];
         setAllUsersTransfers(uniqueitemsArray);
         updateAdminHomePage(uniqueitemsArray);
-        notification(uniqueitemsArray);
+        // notification(uniqueitemsArray);
       });
     });
   };
 
-  useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("sw.js")
-        .then(function (registration) {
-          console.log(
-            "Service Worker registered with scope:",
-            registration.scope
-          );
-        })
-        .catch(function (error) {
-          console.error("Service Worker registration failed:", error);
-        });
-    }
-    if ("Notification" in window) {
-      Notification.requestPermission().then(function (permission) {
-        if (permission === "granted") {
-          console.log("Notification permission granted.");
-        }
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if ("serviceWorker" in navigator) {
+  //     navigator.serviceWorker
+  //       .register("sw.js")
+  //       .then(function (registration) {
+  //         console.log(
+  //           "Service Worker registered with scope:",
+  //           registration.scope
+  //         );
+  //       })
+  //       .catch(function (error) {
+  //         console.error("Service Worker registration failed:", error);
+  //       });
+  //   }
+  //   if ("Notification" in window) {
+  //     Notification.requestPermission().then(function (permission) {
+  //       if (permission === "granted") {
+  //         console.log("Notification permission granted.");
+  //       }
+  //     });
+  //   }
+  // }, []);
 
-  // NOTIFICATION NEW TRANSFER
-  const notification = (uniqueitemsArray) => {
-    if (uniqueitemsArray.length > 0) {
-      const newAddedTransfer = uniqueitemsArray.find((item) => {
-        return (
-          item.createdDate < Date.now() &&
-          item.createdDate > moment().subtract(10, "seconds").valueOf()
-        );
-      });
-      if (
-        Notification.permission === "granted" &&
-        newAddedTransfer !== undefined
-      ) {
-        let hotelName = newAddedTransfer.direction.replace(
-          "Kraków Airport",
-          ""
-        );
-        hotelName = hotelName.replace(" - ", "").toUpperCase();
-        if (isAdmin && newAddedTransfer.status === "pending") {
-          navigator.serviceWorker.ready.then(function (registration) {
-            registration.showNotification(`${hotelName} dodał transfer`, {
-              body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
-              icon: "logo192.png",
-              tag: newAddedTransfer.id,
-              vibrate: [200, 100, 200],
-            });
-          });
-        }
-        if (isAdmin && newAddedTransfer.status === "cancel") {
-          navigator.serviceWorker.ready.then(function (registration) {
-            registration.showNotification(`${hotelName} anulował transfer`, {
-              body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
-              icon: "logo192.png",
-              tag: newAddedTransfer.id,
-              vibrate: [200, 100, 200],
-            });
-          });
-        }
-        self.addEventListener("notificationclick", (event) => {
-          event.notification.close();
+  // // NOTIFICATION NEW TRANSFER
+  // const notification = (uniqueitemsArray) => {
+  //   if (uniqueitemsArray.length > 0) {
+  //     const newAddedTransfer = uniqueitemsArray.find((item) => {
+  //       return (
+  //         item.createdDate < Date.now() &&
+  //         item.createdDate > moment().subtract(10, "seconds").valueOf()
+  //       );
+  //     });
+  //     if (
+  //       Notification.permission === "granted" &&
+  //       newAddedTransfer !== undefined
+  //     ) {
+  //       let hotelName = newAddedTransfer.direction.replace(
+  //         "Kraków Airport",
+  //         ""
+  //       );
+  //       hotelName = hotelName.replace(" - ", "").toUpperCase();
+  //       if (isAdmin && newAddedTransfer.status === "pending") {
+  //         navigator.serviceWorker.ready.then(function (registration) {
+  //           registration.showNotification(`${hotelName} dodał transfer`, {
+  //             body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
+  //             icon: "logo192.png",
+  //             tag: newAddedTransfer.id,
+  //             vibrate: [200, 100, 200],
+  //           });
+  //         });
+  //       }
+  //       if (isAdmin && newAddedTransfer.status === "cancel") {
+  //         navigator.serviceWorker.ready.then(function (registration) {
+  //           registration.showNotification(`${hotelName} anulował transfer`, {
+  //             body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
+  //             icon: "logo192.png",
+  //             tag: newAddedTransfer.id,
+  //             vibrate: [200, 100, 200],
+  //           });
+  //         });
+  //       }
+  //       self.addEventListener("notificationclick", (event) => {
+  //         event.notification.close();
 
-          // User selected (e.g., clicked in) the main body of notification.
-          clients.openWindow("https://demo-transfers.vercel.app");
-        });
-      }
-    }
+  //         // User selected (e.g., clicked in) the main body of notification.
+  //         clients.openWindow("https://demo-transfers.vercel.app");
+  //       });
+  //     }
+  //   }
 
-    // END NOTIFICATION NEW TRANSFER
-  };
-  const notification2 = (items) => {
-    if (items.length > 0) {
-      const newAddedTransfer = items.find((item) => {
-        return (
-          item.createdDate < Date.now() &&
-          item.createdDate > moment().subtract(10, "seconds").valueOf()
-        );
-      });
-      if (
-        Notification.permission === "granted" &&
-        newAddedTransfer !== undefined
-      ) {
-        if (!isAdmin && newAddedTransfer.status === "ok") {
-          navigator.serviceWorker.ready.then(function (registration) {
-            registration.showNotification("Potwierdzono transfer!", {
-              body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
-              icon: "logo192.png",
-              tag: newAddedTransfer.id,
-              vibrate: [200, 100, 200],
-            });
-          });
-        }
-        self.addEventListener("notificationclick", (event) => {
-          event.notification.close();
+  //   // END NOTIFICATION NEW TRANSFER
+  // };
+  // const notification2 = (items) => {
+  //   if (items.length > 0) {
+  //     const newAddedTransfer = items.find((item) => {
+  //       return (
+  //         item.createdDate < Date.now() &&
+  //         item.createdDate > moment().subtract(10, "seconds").valueOf()
+  //       );
+  //     });
+  //     if (
+  //       Notification.permission === "granted" &&
+  //       newAddedTransfer !== undefined
+  //     ) {
+  //       if (!isAdmin && newAddedTransfer.status === "ok") {
+  //         navigator.serviceWorker.ready.then(function (registration) {
+  //           registration.showNotification("Potwierdzono transfer!", {
+  //             body: `DATA: ${newAddedTransfer.date}, GODZINA: ${newAddedTransfer.time}`,
+  //             icon: "logo192.png",
+  //             tag: newAddedTransfer.id,
+  //             vibrate: [200, 100, 200],
+  //           });
+  //         });
+  //       }
+  //       self.addEventListener("notificationclick", (event) => {
+  //         event.notification.close();
 
-          // User selected (e.g., clicked in) the main body of notification.
-          clients.openWindow("https://demo-transfers.vercel.app");
-        });
-      }
-    }
+  //         // User selected (e.g., clicked in) the main body of notification.
+  //         clients.openWindow("https://demo-transfers.vercel.app");
+  //       });
+  //     }
+  //   }
 
-    // END NOTIFICATION NEW TRANSFER
-  };
+  //   // END NOTIFICATION NEW TRANSFER
+  // };
 
   // DOWNLOAD DATA
   const exportData = () => {
@@ -526,7 +526,7 @@ const AppProvider = ({ children }) => {
 
         if (items.length > 0) {
           setTransfers(items);
-          notification2(items);
+          // notification2(items);
         } else {
           setTransfers([]);
         }

@@ -5,6 +5,7 @@ import Head from "next/head";
 import { AppProvider } from "../components/context";
 import Layout from "../components/Layout";
 import { appInfoCompany } from "../companyInfo/CompanyInfo";
+import Notifications from "../components/notify";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -19,6 +20,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <AppProvider>
         <div className="app">
+          <Notifications />
           <Layout>
             <Navbar />
             <Component {...pageProps} />
