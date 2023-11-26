@@ -1,3 +1,399 @@
+if (!self.define) {
+  let e,
+    s = {};
+  const i = (i, n) => (
+    (i = new URL(i + ".js", n).href),
+    s[i] ||
+      new Promise((s) => {
+        if ("document" in self) {
+          const e = document.createElement("script");
+          (e.src = i), (e.onload = s), document.head.appendChild(e);
+        } else (e = i), importScripts(i), s();
+      }).then(() => {
+        let e = s[i];
+        if (!e) throw new Error(`Module ${i} didn’t register its module`);
+        return e;
+      })
+  );
+  self.define = (n, a) => {
+    const c =
+      e ||
+      ("document" in self ? document.currentScript.src : "") ||
+      location.href;
+    if (s[c]) return;
+    let t = {};
+    const r = (e) => i(e, c),
+      o = { module: { uri: c }, exports: t, require: r };
+    s[c] = Promise.all(n.map((e) => o[e] || r(e))).then((e) => (a(...e), t));
+  };
+}
+define(["./workbox-7c2a5a06"], function (e) {
+  "use strict";
+  importScripts(),
+    self.skipWaiting(),
+    e.clientsClaim(),
+    e.precacheAndRoute(
+      [
+        {
+          url: "/_next/static/L0fJKlphqE8RwXryOPWWd/_buildManifest.js",
+          revision: "ef6cc3d884dce0343fae1f89236ea6ee",
+        },
+        {
+          url: "/_next/static/L0fJKlphqE8RwXryOPWWd/_ssgManifest.js",
+          revision: "5352cb582146311d1540f6075d1f265e",
+        },
+        {
+          url: "/_next/static/chunks/0c428ae2-496f55a9bc32cbe2.js",
+          revision: "496f55a9bc32cbe2",
+        },
+        {
+          url: "/_next/static/chunks/261-f2b14d609f479f4a.js",
+          revision: "f2b14d609f479f4a",
+        },
+        {
+          url: "/_next/static/chunks/31664189-256576a8b84a0b13.js",
+          revision: "256576a8b84a0b13",
+        },
+        {
+          url: "/_next/static/chunks/651.b16f0dc3f873aff5.js",
+          revision: "b16f0dc3f873aff5",
+        },
+        {
+          url: "/_next/static/chunks/ae51ba48-f1a928dbc31fae9e.js",
+          revision: "f1a928dbc31fae9e",
+        },
+        {
+          url: "/_next/static/chunks/d0c16330-257782370bf0fc42.js",
+          revision: "257782370bf0fc42",
+        },
+        {
+          url: "/_next/static/chunks/framework-187d9d67315882f6.js",
+          revision: "187d9d67315882f6",
+        },
+        {
+          url: "/_next/static/chunks/main-c0909a555e1c7944.js",
+          revision: "c0909a555e1c7944",
+        },
+        {
+          url: "/_next/static/chunks/pages/_app-0041676e78b51ff9.js",
+          revision: "0041676e78b51ff9",
+        },
+        {
+          url: "/_next/static/chunks/pages/_error-cd38dd4ccec7f2af.js",
+          revision: "cd38dd4ccec7f2af",
+        },
+        {
+          url: "/_next/static/chunks/pages/index-b9d3e5ef3d1605d1.js",
+          revision: "b9d3e5ef3d1605d1",
+        },
+        {
+          url: "/_next/static/chunks/pages/reservation-a41b29b3e9f26066.js",
+          revision: "a41b29b3e9f26066",
+        },
+        {
+          url: "/_next/static/chunks/pages/transfers-3bde2a5db4867565.js",
+          revision: "3bde2a5db4867565",
+        },
+        {
+          url: "/_next/static/chunks/polyfills-0d1b80a048d4787e.js",
+          revision: "40ccea369337cec877151c906f22814d",
+        },
+        {
+          url: "/_next/static/chunks/webpack-9382979e0860e601.js",
+          revision: "9382979e0860e601",
+        },
+        {
+          url: "/_next/static/css/ef22d88b0934a153.css",
+          revision: "ef22d88b0934a153",
+        },
+        { url: "/favicon.ico", revision: "ac92b239ae1a6ffac95c4bf199e3a7c1" },
+        {
+          url: "/icon-192x192.png",
+          revision: "ae1d886aab75c4159630799cf2951abf",
+        },
+        {
+          url: "/icon-256x256.png",
+          revision: "94f9891f5cb2ac266ec08044894974c3",
+        },
+        {
+          url: "/icon-384x384.png",
+          revision: "1e46921fe27c51c64e736476ca0c4e30",
+        },
+        {
+          url: "/icon-512x512.png",
+          revision: "99165fe3dc788b0cebc621dfae1ec716",
+        },
+        {
+          url: "/images/addUser.png",
+          revision: "75574131a76c910936a2595cec9a9495",
+        },
+        {
+          url: "/images/bg3.jpg",
+          revision: "e2d595c24901b409d8288ed6f91bfb62",
+        },
+        {
+          url: "/images/cancelEmail.png",
+          revision: "cde03377577a476c693c69295794bc3b",
+        },
+        {
+          url: "/images/car2.png",
+          revision: "ddc3e3dac9c505aac180730e25d59477",
+        },
+        {
+          url: "/images/carVideo2.mp4",
+          revision: "d4a35274aac2f2a76ac47b51d950ced7",
+        },
+        {
+          url: "/images/chartsImg.png",
+          revision: "46902e4c8130175845ba0938471f6a21",
+        },
+        {
+          url: "/images/loading2.gif",
+          revision: "10625d2005fea4b2b5b5f05051e99d37",
+        },
+        {
+          url: "/images/loginBg.jpg",
+          revision: "086d8893ae30af886233b5b71cd5d5bb",
+        },
+        {
+          url: "/images/loginImg.png",
+          revision: "5e4fbe2381de948e9707b63c4dbde24e",
+        },
+        {
+          url: "/images/loginImg2.png",
+          revision: "957a3202badc1439cfeefa0015c650f2",
+        },
+        {
+          url: "/images/logoJarek.png",
+          revision: "424dedbf4550a088602f02df61b65b95",
+        },
+        {
+          url: "/images/tBg.jpg",
+          revision: "013bbb0dad132cfe2d505affed83eb03",
+        },
+        {
+          url: "/instructionVideo/admin/hotelsettingsAdmin.mp4",
+          revision: "74acbfa1fbaf6e5cd8a4054a68916e30",
+        },
+        {
+          url: "/instructionVideo/admin/mainPageAdmin.mp4",
+          revision: "94ab41b3b687c217cf4544d508882d17",
+        },
+        {
+          url: "/instructionVideo/admin/menuAdmin.mp4",
+          revision: "6178f59a2ad1c3462afd2219688fe319",
+        },
+        {
+          url: "/instructionVideo/admin/moneyAdmin.mp4",
+          revision: "823030963b9ea1363f5852c7d9e9ddf7",
+        },
+        {
+          url: "/instructionVideo/admin/settingsAdmin.mp4",
+          revision: "1ac32bdd20cc6977e4bba666a2b7ecc0",
+        },
+        {
+          url: "/instructionVideo/admin/transfersAdmin.mp4",
+          revision: "4df5e51cee526f0d7d4125e7179ca763",
+        },
+        {
+          url: "/instructionVideo/user/addTransferUser.mp4",
+          revision: "89d37782bacaeb38f561851111fd5e27",
+        },
+        {
+          url: "/instructionVideo/user/mainPageUser.mp4",
+          revision: "ec67e2ee6684921a8b40ebba561b1bb6",
+        },
+        {
+          url: "/instructionVideo/user/menuUser.mp4",
+          revision: "78cd9349e4edbce9a64ae34c6ab7cff6",
+        },
+        {
+          url: "/instructionVideo/user/transferListUser.mp4",
+          revision: "f4af8c4d68b3a811f2d973c65620ba4b",
+        },
+        { url: "/logo192.png", revision: "aa4798c41b1a470462b4ea0235058ed5" },
+        { url: "/manifest.json", revision: "bb7ab540f0e830c35bfbbd971c35560c" },
+      ],
+      { ignoreURLParametersMatching: [] }
+    ),
+    e.cleanupOutdatedCaches(),
+    e.registerRoute(
+      "/",
+      new e.NetworkFirst({
+        cacheName: "start-url",
+        plugins: [
+          {
+            cacheWillUpdate: async ({
+              request: e,
+              response: s,
+              event: i,
+              state: n,
+            }) =>
+              s && "opaqueredirect" === s.type
+                ? new Response(s.body, {
+                    status: 200,
+                    statusText: "OK",
+                    headers: s.headers,
+                  })
+                : s,
+          },
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      /^https:\/\/fonts\.(?:gstatic)\.com\/.*/i,
+      new e.CacheFirst({
+        cacheName: "google-fonts-webfonts",
+        plugins: [
+          new e.ExpirationPlugin({ maxEntries: 4, maxAgeSeconds: 31536e3 }),
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      /^https:\/\/fonts\.(?:googleapis)\.com\/.*/i,
+      new e.StaleWhileRevalidate({
+        cacheName: "google-fonts-stylesheets",
+        plugins: [
+          new e.ExpirationPlugin({ maxEntries: 4, maxAgeSeconds: 604800 }),
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      /\.(?:eot|otf|ttc|ttf|woff|woff2|font.css)$/i,
+      new e.StaleWhileRevalidate({
+        cacheName: "static-font-assets",
+        plugins: [
+          new e.ExpirationPlugin({ maxEntries: 4, maxAgeSeconds: 604800 }),
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      /\.(?:jpg|jpeg|gif|png|svg|ico|webp)$/i,
+      new e.StaleWhileRevalidate({
+        cacheName: "static-image-assets",
+        plugins: [
+          new e.ExpirationPlugin({ maxEntries: 64, maxAgeSeconds: 86400 }),
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      /\/_next\/image\?url=.+$/i,
+      new e.StaleWhileRevalidate({
+        cacheName: "next-image",
+        plugins: [
+          new e.ExpirationPlugin({ maxEntries: 64, maxAgeSeconds: 86400 }),
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      /\.(?:mp3|wav|ogg)$/i,
+      new e.CacheFirst({
+        cacheName: "static-audio-assets",
+        plugins: [
+          new e.RangeRequestsPlugin(),
+          new e.ExpirationPlugin({ maxEntries: 32, maxAgeSeconds: 86400 }),
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      /\.(?:mp4)$/i,
+      new e.CacheFirst({
+        cacheName: "static-video-assets",
+        plugins: [
+          new e.RangeRequestsPlugin(),
+          new e.ExpirationPlugin({ maxEntries: 32, maxAgeSeconds: 86400 }),
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      /\.(?:js)$/i,
+      new e.StaleWhileRevalidate({
+        cacheName: "static-js-assets",
+        plugins: [
+          new e.ExpirationPlugin({ maxEntries: 32, maxAgeSeconds: 86400 }),
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      /\.(?:css|less)$/i,
+      new e.StaleWhileRevalidate({
+        cacheName: "static-style-assets",
+        plugins: [
+          new e.ExpirationPlugin({ maxEntries: 32, maxAgeSeconds: 86400 }),
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      /\/_next\/data\/.+\/.+\.json$/i,
+      new e.StaleWhileRevalidate({
+        cacheName: "next-data",
+        plugins: [
+          new e.ExpirationPlugin({ maxEntries: 32, maxAgeSeconds: 86400 }),
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      /\.(?:json|xml|csv)$/i,
+      new e.NetworkFirst({
+        cacheName: "static-data-assets",
+        plugins: [
+          new e.ExpirationPlugin({ maxEntries: 32, maxAgeSeconds: 86400 }),
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      ({ url: e }) => {
+        if (!(self.origin === e.origin)) return !1;
+        const s = e.pathname;
+        return !s.startsWith("/api/auth/") && !!s.startsWith("/api/");
+      },
+      new e.NetworkFirst({
+        cacheName: "apis",
+        networkTimeoutSeconds: 10,
+        plugins: [
+          new e.ExpirationPlugin({ maxEntries: 16, maxAgeSeconds: 86400 }),
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      ({ url: e }) => {
+        if (!(self.origin === e.origin)) return !1;
+        return !e.pathname.startsWith("/api/");
+      },
+      new e.NetworkFirst({
+        cacheName: "others",
+        networkTimeoutSeconds: 10,
+        plugins: [
+          new e.ExpirationPlugin({ maxEntries: 32, maxAgeSeconds: 86400 }),
+        ],
+      }),
+      "GET"
+    ),
+    e.registerRoute(
+      ({ url: e }) => !(self.origin === e.origin),
+      new e.NetworkFirst({
+        cacheName: "cross-origin",
+        networkTimeoutSeconds: 10,
+        plugins: [
+          new e.ExpirationPlugin({ maxEntries: 32, maxAgeSeconds: 3600 }),
+        ],
+      }),
+      "GET"
+    );
+});
 self.addEventListener("push", async (event) => {
   if (event.data) {
     const eventData = await event.data.json();
