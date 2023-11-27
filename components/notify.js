@@ -35,15 +35,15 @@ export default function Notifications() {
       "serviceWorker" in navigator &&
       "PushManager" in window;
     if (!notificationsSupported()) {
-      return <h3>Please install the PWA first!</h3>;
+      return alert("Please install the PWA first!");
     }
   }, []);
 
   return (
-    <>
+    <div style={{ zIndex: "9999999999999999999", position: "fixed" }}>
       <h3>WebPush PWA</h3>
       <button onClick={subscribe}>Ask permission and subscribe!</button>
-    </>
+    </div>
   );
 }
 
@@ -86,7 +86,12 @@ const saveSubscription = async (subscription) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(subscription),
+    body: JSON.stringify({
+      subscription: subscription,
+      title: "notifyTitle",
+      body: "notifyText",
+      tag: "notifyTag",
+    }),
   });
   return response.json();
 };

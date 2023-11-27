@@ -17,26 +17,26 @@ webpush.setVapidDetails(
 );
 const handler = async (request, response) => {
   if (request.method === "POST") {
-    const subscription = request.body;
-
-    if (!subscription) {
+    const subscriptionA = request.body;
+    if (!subscriptionA) {
       console.error("No subscription was provided!");
       return;
     }
 
-    const updatedDb = await saveSubscriptionToDb(subscription);
+    const updatedDb = await saveSubscriptionToDb(subscriptionA);
 
     return response.json({ message: "success", updatedDb });
   }
   if (request.method === "GET") {
     const subscriptions = await getSubscriptionsFromDb();
-
+    console.log(subscriptions);
     subscriptions.forEach((s) => {
       const payload = JSON.stringify({
-        title: "WebPush Notification!",
-        body: "Hello World",
+        title: s.title,
+        body: s.body,
+        tag: s.tag,
       });
-      webpush.sendNotification(s, payload);
+      webpush.sendNotification(s.subscription, payload);
     });
 
     return response.json({
