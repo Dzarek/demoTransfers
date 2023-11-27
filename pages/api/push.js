@@ -1,4 +1,4 @@
-import webpush, { PushSubscription } from "web-push";
+import webpush from "web-push";
 import {
   getSubscriptionsFromDb,
   saveSubscriptionToDb,
