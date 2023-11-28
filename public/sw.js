@@ -4,8 +4,7 @@ self.addEventListener("push", async (event) => {
     showLocalNotification(
       eventData.title,
       eventData.body,
-      eventData,
-      tag,
+      eventData.tag,
       self.registration
     );
   }

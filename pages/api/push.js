@@ -38,6 +38,13 @@ const handler = async (request, response) => {
       });
       webpush.sendNotification(s.subscription, payload);
     });
+    // const oneSubscription = subscriptions[0];
+    // const payload = JSON.stringify({
+    //   title: oneSubscription.title,
+    //   body: oneSubscription.body,
+    //   tag: oneSubscription.tag,
+    // });
+    // webpush.sendNotification(oneSubscription.subscription, payload);
 
     return response.json({
       message: `${subscriptions.length} messages sent!`,
