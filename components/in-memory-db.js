@@ -13,7 +13,7 @@
 // };
 
 // export const getSubscriptionsFromDb = () => {
-//   return Promise.resolve(dummyDb.subscriptions);
+//   return Promise.resolve(dummyDb.subscriptions);a
 // };
 
 export let dummyDb = { subscriptions: [] };
