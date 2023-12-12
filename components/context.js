@@ -83,7 +83,6 @@ const AppProvider = ({ children }) => {
   const [file, setFile] = useState(null);
   const [downloadData, setDownloadData] = useState(null);
   // END OTHER USESTATE
-  const [myTag, setMyTag] = useState(null);
 
   // AUTH
   const getUser = getAuth();
@@ -350,9 +349,10 @@ const AppProvider = ({ children }) => {
         // });
       }
     }
-
-    // END NOTIFICATION NEW TRANSFER
   };
+
+  // END NOTIFICATION NEW TRANSFER
+
   // const notification2 = (items) => {
   //   if (items.length > 0) {
   //     const newAddedTransfer = items.find((item) => {

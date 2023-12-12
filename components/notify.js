@@ -1,32 +1,9 @@
 import { useEffect } from "react";
 const CONFIG = {
   PUBLIC_KEY:
-    "BKA8Tv4SCygZtL9oHVZXCsVsb_k2RGnfzZ820f_m4F0GovyhG3UigN9mfmrpXxV6yRWrGNBqt2Ko7o__GF3kly8",
-  PRIVATE_KEY: "m_mhR0RrCeWKZYkIlg_MJk_sEszpDK9EhqPXzTrQ7To",
+    "BO9u94YZU2Kt19Vhq7uFcG9bHpimZ1zPnQ4Ky2okSN2mi1FzJ61Z_825_n278QwbMOLk37-NHWqwUHhXq7Wz-Kk",
+  PRIVATE_KEY: "olIX4Wp8KWJDF-YjrE1A3W3r7-oWNIvOf3rmPquf2Fo",
 };
-
-// useEffect(() => {
-//   if ("serviceWorker" in navigator) {
-//     navigator.serviceWorker
-//       .register("sw.js")
-//       .then(function (registration) {
-//         console.log(
-//           "Service Worker registered with scope:",
-//           registration.scope
-//         );
-//       })
-//       .catch(function (error) {
-//         console.error("Service Worker registration failed:", error);
-//       });
-//   }
-//   if ("Notification" in window) {
-//     Notification.requestPermission().then(function (permission) {
-//       if (permission === "granted") {
-//         console.log("Notification permission granted.");
-//       }
-//     });
-//   }
-// }, []);
 
 export default function Notifications() {
   useEffect(() => {

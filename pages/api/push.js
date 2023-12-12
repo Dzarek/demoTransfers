@@ -6,10 +6,9 @@ import {
 
 const CONFIG = {
   PUBLIC_KEY:
-    "BKA8Tv4SCygZtL9oHVZXCsVsb_k2RGnfzZ820f_m4F0GovyhG3UigN9mfmrpXxV6yRWrGNBqt2Ko7o__GF3kly8",
-  PRIVATE_KEY: "m_mhR0RrCeWKZYkIlg_MJk_sEszpDK9EhqPXzTrQ7To",
+    "BO9u94YZU2Kt19Vhq7uFcG9bHpimZ1zPnQ4Ky2okSN2mi1FzJ61Z_825_n278QwbMOLk37-NHWqwUHhXq7Wz-Kk",
+  PRIVATE_KEY: "olIX4Wp8KWJDF-YjrE1A3W3r7-oWNIvOf3rmPquf2Fo",
 };
-
 webpush.setVapidDetails(
   "mailto:dzarekcoding@gmail.com",
   CONFIG.PUBLIC_KEY,
@@ -17,7 +16,7 @@ webpush.setVapidDetails(
 );
 const handler = async (request, response) => {
   if (request.method === "POST") {
-    const subscriptionA = request.body;
+    const subscriptionA = await request.body;
     if (!subscriptionA) {
       console.error("No subscription was provided!");
       return;
