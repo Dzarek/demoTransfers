@@ -14,7 +14,6 @@ export const saveSubscriptionToDb = async (subscriptionA) => {
 
 export const getSubscriptionsFromDb = () => {
   return Promise.resolve(dummyDb.subscriptions);
-  a;
 };
 
 // export let dummyDb = { subscriptions: [] };

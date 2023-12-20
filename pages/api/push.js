@@ -1,8 +1,9 @@
 import webpush from "web-push";
-import {
-  getSubscriptionsFromDb,
-  saveSubscriptionToDb,
-} from "../../components/in-memory-db";
+// import {
+//   getSubscriptionsFromDb,
+//   saveSubscriptionToDb,
+// } from "../../components/in-memory-db";
+import { query } from "../../lib/db";
 
 const CONFIG = {
   PUBLIC_KEY:
@@ -21,21 +22,43 @@ const handler = async (request, response) => {
       console.error("No subscription was provided!");
       return;
     }
-
-    const updatedDb = await saveSubscriptionToDb(subscriptionA);
-
-    return response.json({ message: "success", updatedDb });
+    // const updatedDb = await saveSubscriptionToDb(subscriptionA);
+    const { tag, title, body, subscription } = subscriptionA;
+    const { endpoint, expirationTime, keys } = subscription;
+    const { p256dh, auth } = keys;
+    const addProduct = await query({
+      query:
+        "INSERT INTO notifications (tag, title, body, endpoint, expirationTime, p256dh, auth) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      values: [tag, title, body, endpoint, expirationTime, p256dh, auth],
+    });
+    // if (addProduct.insertId) {
+    //   message = "success";
+    // } else {
+    //   message = "error";
+    // }
+    return response.json({ message: "success", addProduct });
   }
   if (request.method === "GET") {
-    const subscriptions = await getSubscriptionsFromDb();
-    console.log(subscriptions);
+    const notifyMsql = await query({
+      query: "SELECT * FROM notifications",
+      values: [],
+    });
+
+    // response.status(200).json({ notifyMsql: notifyMsql });
+    // console.log(notifyMsql);
+
+    // const subscriptions = await getSubscriptionsFromDb();
+    const subscriptions = notifyMsql;
+    // console.log(subscriptions);
     subscriptions.forEach((s) => {
+      const { endpoint, expirationTime, p256dh, auth } = s;
+      const subscription = { endpoint, expirationTime, keys: { p256dh, auth } };
       const payload = JSON.stringify({
         title: s.title,
         body: s.body,
         tag: s.tag,
       });
-      webpush.sendNotification(s.subscription, payload);
+      webpush.sendNotification(subscription, payload);
     });
     // const oneSubscription = subscriptions[0];
     // const payload = JSON.stringify({
