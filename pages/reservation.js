@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { IoAddCircle, IoCheckmark } from "react-icons/io5";
 import { FaLock, FaLockOpen } from "react-icons/fa";
 import { sendConfirmation } from "../lib/api";
+import { subscribe } from "../components/Notification";
 
 let minDate = moment().format("YYYY-MM-DD");
 let maxDate = moment().add(90, "days").format("YYYY-MM-DD");
@@ -125,13 +126,21 @@ const ReservationPage = () => {
     await sendConfirmation(data);
   };
 
+  const handleSub = async () => {
+    const title = `Hotel dodał transfer`;
+    const body = `DATA: kiedyś, GODZINA: któraś`;
+    const tag = new Date();
+    await subscribe(title, body, tag);
+    fetch("api/push");
+  };
+
   return (
     <Wrapper>
       <div className="imgContainer">
         <h2>
           Rezerwacja <br /> <p>(max 90 dni do przodu)</p>
         </h2>
-
+        <button onClick={handleSub}>Click notify</button>
         <img
           src="/images/car2.png"
           alt=""

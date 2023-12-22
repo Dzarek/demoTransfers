@@ -5,9 +5,31 @@ import Head from "next/head";
 import { AppProvider } from "../components/context";
 import Layout from "../components/Layout";
 import { appInfoCompany } from "../companyInfo/CompanyInfo";
-import Notifications from "../components/notify";
+import { useEffect } from "react";
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("sw.js", { scope: "/pages/" })
+        .then(function (registration) {
+          console.log(
+            "Service Worker registered with scope:",
+            registration.scope
+          );
+        })
+        .catch(function (error) {
+          console.error("Service Worker registration failed:", error);
+        });
+    }
+    if ("Notification" in window && "PushManager" in window) {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === "granted") {
+          console.log("Notification permission granted.");
+        }
+      });
+    }
+  }, []);
   return (
     <>
       <Head>
@@ -21,7 +43,6 @@ function MyApp({ Component, pageProps }) {
       <AppProvider>
         <div className="app">
           <Layout>
-            <Notifications />
             <Navbar />
             <Component {...pageProps} />
             <Footer />
