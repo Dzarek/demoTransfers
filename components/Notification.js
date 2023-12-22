@@ -14,8 +14,10 @@ const registerServiceWorker = async () => {
 };
 
 const saveSubscription = async (subscription, title, body, tag) => {
-  const ORIGIN = window.location.origin;
-  const BACKEND_URL = `${ORIGIN}/api/push`;
+  // const ORIGIN = window.location.origin;
+  // const BACKEND_URL = `${ORIGIN}/api/push`;
+  // const BACKEND_URL = `http://localhost:3000/api/push`;
+  const BACKEND_URL = `https://dzarektest.pl/api/push`;
 
   const response = await fetch(BACKEND_URL, {
     method: "POST",

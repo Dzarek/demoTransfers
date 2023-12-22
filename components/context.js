@@ -22,7 +22,7 @@ import {
 } from "firebase/auth";
 import * as XLSX from "xlsx";
 import { sendConfirmationCancel } from "../lib/api";
-// import { subscribe } from "./Notification";
+import { subscribe } from "./Notification";
 
 const AppContext = React.createContext();
 
@@ -828,6 +828,39 @@ const AppProvider = ({ children }) => {
   // END POST TRANSFER TO FIREBASE
 
   // EDIT STATUS
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("sw.js")
+        .then(function (registration) {
+          console.log(
+            "Service Worker registered with scope:",
+            registration.scope
+          );
+        })
+        .catch(function (error) {
+          console.error("Service Worker registration failed:", error);
+        });
+    }
+    if ("Notification" in window && "PushManager" in window) {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === "granted") {
+          console.log("Notification permission granted.");
+        }
+      });
+    }
+  }, []);
+
+  const handleSub = async (name, date, time, id) => {
+    const hotelName = name.replace(" - ", "").toUpperCase();
+    const title = `${hotelName} dodał transfer`;
+    const body = `DATA: ${date}, GODZINA: ${time}`;
+    const tag = id;
+    await subscribe(title, body, tag);
+    // fetch("http://localhost:3000/api/push");
+    fetch("https://dzarektest.pl/api/push/");
+  };
+
   const handleStatus = () => {
     if (confirmDelete) {
       const deletedItem = transfers.find((item) => item.id === deleteId);
@@ -846,6 +879,7 @@ const AppProvider = ({ children }) => {
         const dataNameOfGuest = deletedItem.nameOfGuest;
         const data = { name, convertDate, dataNameOfGuest };
         sendConfirmationCancel(data);
+        handleSub(name, deletedItem.date, deletedItem.time, deletedItem.id);
       }
       const activeTransferArray = activeTransfers.filter(
         (item) => item.id !== deleteId
@@ -861,6 +895,7 @@ const AppProvider = ({ children }) => {
       setConfirmDelete(false);
     }
   };
+
   // END EDIT STATUS
 
   // UPDATE TRANSFER TO FIREBASE

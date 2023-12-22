@@ -59,7 +59,7 @@ const ReservationPage = () => {
     );
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     const createdDate = moment().valueOf();
     e.preventDefault();
     const id = uuidv4();
@@ -97,6 +97,7 @@ const ReservationPage = () => {
       createdDate,
       specialTransfer
     );
+    await handleSub(name, date, time, id);
     setSendForm(true);
     setTimeout(() => {
       setDate(minDate);
@@ -126,12 +127,39 @@ const ReservationPage = () => {
     await sendConfirmation(data);
   };
 
-  const handleSub = async () => {
-    const title = `Hotel dodał transfer`;
-    const body = `DATA: kiedyś, GODZINA: któraś`;
-    const tag = new Date();
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("sw.js")
+        .then(function (registration) {
+          console.log(
+            "Service Worker registered with scope:",
+            registration.scope
+          );
+        })
+        .catch(function (error) {
+          console.error("Service Worker registration failed:", error);
+        });
+    }
+    if ("Notification" in window && "PushManager" in window) {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === "granted") {
+          console.log("Notification permission granted.");
+        }
+      });
+    }
+  }, []);
+
+  const handleSub = async (name, date, time, id) => {
+    const hotelName = name.replace(" - ", "").toUpperCase();
+    const title = `${hotelName} dodał transfer`;
+    const body = `DATA: ${date}, GODZINA: ${time}`;
+    const tag = id;
     await subscribe(title, body, tag);
-    fetch("api/push");
+    // fetch("http://localhost:3000/api/push");
+    if (isAdmin) {
+      fetch("https://dzarektest.pl/api/push/");
+    }
   };
 
   return (
@@ -140,7 +168,7 @@ const ReservationPage = () => {
         <h2>
           Rezerwacja <br /> <p>(max 90 dni do przodu)</p>
         </h2>
-        <button onClick={handleSub}>Click notify</button>
+        {/* <button onClick={handleSub}>Click notify</button> */}
         <img
           src="/images/car2.png"
           alt=""
