@@ -81,7 +81,7 @@ const ReservationPage = () => {
       specialTransfer,
     };
     setTransfers([...transfers, newTransfer]);
-    postProducts(
+    await postProducts(
       id,
       status,
       date,
@@ -127,6 +127,7 @@ const ReservationPage = () => {
     await sendConfirmation(data);
   };
 
+  // NOTIFICATION
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
@@ -156,11 +157,8 @@ const ReservationPage = () => {
     const body = `DATA: ${date}, GODZINA: ${time}`;
     const tag = id;
     await subscribe(title, body, tag);
-    // fetch("http://localhost:3000/api/push");
-    if (isAdmin) {
-      fetch("https://dzarektest.pl/api/push/");
-    }
   };
+  // END NOTIFICATION
 
   return (
     <Wrapper>
@@ -168,7 +166,6 @@ const ReservationPage = () => {
         <h2>
           Rezerwacja <br /> <p>(max 90 dni do przodu)</p>
         </h2>
-        {/* <button onClick={handleSub}>Click notify</button> */}
         <img
           src="/images/car2.png"
           alt=""

@@ -3,19 +3,54 @@ import { useGlobalContext } from "../components/context";
 import Link from "next/link";
 import TransfersList from "../components/TransfersList";
 import Loading from "../components/Loading";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaCar, FaInfoCircle } from "react-icons/fa";
+import { subscribe } from "../components/Notification";
 
 const bg3 = "/images/bg3.jpg";
 
 export default function Home() {
   const { next5transfers, transfers, loading, isAdmin, lastAddedTransfers } =
     useGlobalContext();
-
   const [lastAddedList, setLastAddedList] = useState(false);
+
+  // NOTIFICATION
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("sw.js")
+        .then(function (registration) {
+          console.log(
+            "Service Worker registered with scope:",
+            registration.scope
+          );
+        })
+        .catch(function (error) {
+          console.error("Service Worker registration failed:", error);
+        });
+    }
+    if ("Notification" in window && "PushManager" in window) {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === "granted") {
+          console.log("Notification permission granted.");
+        }
+      });
+    }
+  }, []);
+
+  const handleSub = async () => {
+    const title = `nowy tytuł`;
+    const tag = new Date();
+    const body = `index body ${tag}`;
+    await subscribe(title, body, tag);
+  };
+  // END NOTIFICATION
 
   return (
     <Wrapper>
+      <button onClick={handleSub} className="notiBtn">
+        Click to check notification
+      </button>
       {isAdmin ? (
         <div className="containerAdmin">
           <div className="titleContainer">
@@ -118,6 +153,13 @@ const Wrapper = styled.div`
     padding-top: 30vh;
     padding-top: 30dvh;
     min-height: 74dvh;
+  }
+  .notiBtn {
+    position: fixed;
+    top: 10vh;
+    left: 10vw;
+    z-index: 99999999999999999;
+    font-size: 2rem;
   }
   .containerAdmin {
     display: flex;

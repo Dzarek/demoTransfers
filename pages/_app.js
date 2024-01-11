@@ -8,10 +8,11 @@ import { appInfoCompany } from "../companyInfo/CompanyInfo";
 import { useEffect } from "react";
 
 function MyApp({ Component, pageProps }) {
+  // NOTIFICATION
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register("sw.js", { scope: "/pages/" })
+        .register("sw.js")
         .then(function (registration) {
           console.log(
             "Service Worker registered with scope:",
@@ -30,6 +31,9 @@ function MyApp({ Component, pageProps }) {
       });
     }
   }, []);
+
+  // END NOTIFICATION
+
   return (
     <>
       <Head>
