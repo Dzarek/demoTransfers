@@ -1,22 +1,16 @@
 import webpush from "web-push";
 import { query } from "../../lib/db";
 
-// const CONFIG = {
-//   PUBLIC_KEY:
-//     "BO9u94YZU2Kt19Vhq7uFcG9bHpimZ1zPnQ4Ky2okSN2mi1FzJ61Z_825_n278QwbMOLk37-NHWqwUHhXq7Wz-Kk",
-//   PRIVATE_KEY: "olIX4Wp8KWJDF-YjrE1A3W3r7-oWNIvOf3rmPquf2Fo",
-// };
-// webpush.setVapidDetails(
-//   "mailto:dzarekcoding@gmail.com",
-//   CONFIG.PUBLIC_KEY,
-//   CONFIG.PRIVATE_KEY
-// );
-
 webpush.setVapidDetails(
-  process.env.NEXT_PUBLIC_WEB_PUSH_EMAIL,
-  process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
-  process.env.NEXT_PUBLIC_WEB_PUSH_PRIVATE_KEY
+  process.env.WEB_PUSH_EMAIL,
+  process.env.WEB_PUSH_PUBLIC_KEY,
+  process.env.WEB_PUSH_PRIVATE_KEY
 );
+// webpush.setVapidDetails(
+//   process.env.NEXT_PUBLIC_WEB_PUSH_EMAIL,
+//   process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
+//   process.env.NEXT_PUBLIC_WEB_PUSH_PRIVATE_KEY
+// );
 
 const handler = async (request, response) => {
   if (request.method === "POST") {
