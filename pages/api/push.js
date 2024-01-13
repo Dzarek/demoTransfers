@@ -33,13 +33,8 @@ const handler = async (request, response) => {
         "INSERT INTO notifications (tag, title, body, endpoint, expirationTime, p256dh, auth) VALUES (?, ?, ?, ?, ?, ?, ?)",
       values: [tag, title, body, endpoint, expirationTime, p256dh, auth],
     });
-    const deleteProduct = await query({
-      query:
-        "DELETE FROM notifications WHERE created_at < (NOW() - INTERVAL 1 DAY) AND WHERE NOT created_at = ?",
-      values: ["0000-00-00 00:00:00"],
-    });
-    return response.json({ message: "success", addProduct, deleteProduct });
-    // return response.json({ message: "success", addProduct });
+
+    return response.json({ message: "success", addProduct });
   }
   if (request.method === "GET") {
     const notifyMsql = await query({
@@ -48,7 +43,7 @@ const handler = async (request, response) => {
     });
 
     const subscriptions = notifyMsql;
-    subscriptions.forEach((s) => {
+    subscriptions.forEach(async (s) => {
       const oneSubscription = subscriptions[subscriptions.length - 1];
       const { endpoint, expirationTime, p256dh, auth } = s;
       const subscription = { endpoint, expirationTime, keys: { p256dh, auth } };
@@ -57,11 +52,15 @@ const handler = async (request, response) => {
         body: oneSubscription.body,
         tag: oneSubscription.tag,
       });
-      webpush.sendNotification(subscription, payload);
+      await webpush.sendNotification(subscription, payload);
     });
-
+    const deleteProduct = await query({
+      query:
+        "DELETE t1 FROM notifications t1 JOIN notifications t2 ON t1.auth = t2.auth AND t1.id < t2.id",
+    });
     return response.json({
       message: `${notifyMsql.length} messages sent!`,
+      deleteProduct,
     });
   }
 };
