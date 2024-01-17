@@ -2,15 +2,10 @@ import webpush from "web-push";
 import { query } from "../../lib/db";
 
 webpush.setVapidDetails(
-  process.env.WEB_PUSH_EMAIL,
-  process.env.WEB_PUSH_PUBLIC_KEY,
-  process.env.WEB_PUSH_PRIVATE_KEY
+  process.env.NEXT_PUBLIC_WEB_PUSH_EMAIL,
+  process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
+  process.env.NEXT_PUBLIC_WEB_PUSH_PRIVATE_KEY
 );
-// webpush.setVapidDetails(
-//   process.env.NEXT_PUBLIC_WEB_PUSH_EMAIL,
-//   process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
-//   process.env.NEXT_PUBLIC_WEB_PUSH_PRIVATE_KEY
-// );
 
 const handler = async (request, response) => {
   if (request.method === "POST") {
@@ -35,7 +30,6 @@ const handler = async (request, response) => {
       query: "SELECT * FROM notifications",
       values: [],
     });
-
     const subscriptions = notifyMsql;
     subscriptions.forEach(async (s) => {
       const oneSubscription = subscriptions[subscriptions.length - 1];

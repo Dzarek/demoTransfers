@@ -714,34 +714,36 @@ const AppProvider = ({ children }) => {
 
   // NOTIFICATION
   useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("sw.js")
-        .then(function (registration) {
-          console.log(
-            "Service Worker registered with scope:",
-            registration.scope
-          );
-        })
-        .catch(function (error) {
-          console.error("Service Worker registration failed:", error);
+    if (isAdmin) {
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("sw.js")
+          .then(function (registration) {
+            console.log(
+              "Service Worker registered with scope:",
+              registration.scope
+            );
+          })
+          .catch(function (error) {
+            console.error("Service Worker registration failed:", error);
+          });
+      }
+      if ("Notification" in window && "PushManager" in window) {
+        Notification.requestPermission().then(function (permission) {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          }
         });
+      }
     }
-    if ("Notification" in window && "PushManager" in window) {
-      Notification.requestPermission().then(function (permission) {
-        if (permission === "granted") {
-          console.log("Notification permission granted.");
-        }
-      });
-    }
-  }, []);
+  }, [isAdmin]);
 
   const handleSub = async (name, date, time, id) => {
     const hotelName = name.replace(" - ", "").toUpperCase();
     const title = `${hotelName} anulował transfer`;
     const body = `DATA: ${date}, GODZINA: ${time}`;
     const tag = id;
-    await subscribe(title, body, tag);
+    await subscribe(title, body, tag, isAdmin);
   };
   // END NOTIFICATION
 
@@ -753,9 +755,7 @@ const AppProvider = ({ children }) => {
         deletedItem.status = "ok";
         deletedItem.price = deletedItem.price;
         deletedItem.provision = deletedItem.provision;
-        // deletedItem.createdDate = deletedItem.createdDate;
         deletedItem.createdDate = moment().valueOf();
-        // handleSub(name, deletedItem.date, deletedItem.time, deletedItem.id);
       } else {
         deletedItem.status = "cancel";
         deletedItem.price = 0;

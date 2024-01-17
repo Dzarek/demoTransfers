@@ -1,27 +1,22 @@
-// import { getAuth, onAuthStateChanged } from "firebase/auth";
-
-// const auth = getAuth();
-
 self.addEventListener("push", async (event) => {
-  // onAuthStateChanged(auth, async (user) => {
-  //   if (user.uid === "1DJahCGFl4SmBrl0hfH09URLDLU2") {
   if (event.data) {
     const eventData = await event.data.json();
+    // if (eventData.isAdmin) {
     showLocalNotification(
       eventData.title,
       eventData.body,
       eventData.tag,
       self.registration
     );
+    // }
   }
 });
-// });
 
 const showLocalNotification = (title, body, tag, swRegistration) => {
   swRegistration.showNotification(title, {
     body,
     tag,
-    icon: "logo192.png",
+    icon: "./logo192.png",
   });
 };
 

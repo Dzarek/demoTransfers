@@ -43,27 +43,29 @@ const TransfersPage = () => {
 
   // NOTIFICATION
   useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("sw.js")
-        .then(function (registration) {
-          console.log(
-            "Service Worker registered with scope:",
-            registration.scope
-          );
-        })
-        .catch(function (error) {
-          console.error("Service Worker registration failed:", error);
+    if (isAdmin) {
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("sw.js")
+          .then(function (registration) {
+            console.log(
+              "Service Worker registered with scope:",
+              registration.scope
+            );
+          })
+          .catch(function (error) {
+            console.error("Service Worker registration failed:", error);
+          });
+      }
+      if ("Notification" in window && "PushManager" in window) {
+        Notification.requestPermission().then(function (permission) {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          }
         });
+      }
     }
-    if ("Notification" in window && "PushManager" in window) {
-      Notification.requestPermission().then(function (permission) {
-        if (permission === "granted") {
-          console.log("Notification permission granted.");
-        }
-      });
-    }
-  }, []);
+  }, [isAdmin]);
 
   // END NOTIFICATION
 

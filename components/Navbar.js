@@ -10,6 +10,7 @@ import {
   FaUserMinus,
   FaDownload,
   FaUpload,
+  FaBell,
 } from "react-icons/fa";
 import { GiReceiveMoney, GiMoneyStack } from "react-icons/gi";
 import {
@@ -22,6 +23,8 @@ import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from "react-icons/io";
 import { GiHomeGarage } from "react-icons/gi";
 import MoneySumCharts from "./MoneySumCharts";
 import ImportModal from "./ImportModal";
+
+import { subscribe } from "./Notification";
 
 // import { logoCompany } from "../companyInfo/CompanyInfo";
 
@@ -50,6 +53,7 @@ const Navbar = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [newName, setNewName] = useState("");
   const [openImportModal, setOpenImportModal] = useState(false);
+  const [notiInfo, setNotiInfo] = useState(false);
 
   const router = useRouter();
 
@@ -80,6 +84,40 @@ const Navbar = () => {
     changePassword();
     setOpenSettings(false);
   };
+
+  // NOTIFICATION
+  useEffect(() => {
+    if (isAdmin) {
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("sw.js")
+          .then(function (registration) {
+            console.log(
+              "Service Worker registered with scope:",
+              registration.scope
+            );
+          })
+          .catch(function (error) {
+            console.error("Service Worker registration failed:", error);
+          });
+      }
+      if ("Notification" in window && "PushManager" in window) {
+        Notification.requestPermission().then(function (permission) {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          }
+        });
+      }
+    }
+  }, [isAdmin]);
+
+  const handleSub = async () => {
+    const title = `powiadomienia włączone`;
+    const tag = new Date();
+    const body = ``;
+    await subscribe(title, body, tag, isAdmin);
+  };
+  // END NOTIFICATION
 
   return (
     <>
@@ -290,6 +328,15 @@ const Navbar = () => {
                     onClick={() => setOpenImportModal(true)}
                   />
                 </article>
+              </div>
+              <div className="notificationBell">
+                <FaBell
+                  className="iconOut"
+                  onClick={handleSub}
+                  onMouseOver={() => setNotiInfo(true)}
+                  onMouseLeave={() => setNotiInfo(false)}
+                />
+                <p style={{ opacity: notiInfo ? "1" : "0" }}>powiadomienia</p>
               </div>
             </section>
           ) : (
@@ -804,7 +851,7 @@ const Wrapper3 = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 9999;
+  z-index: 99999999999999;
   background-color: #fff;
   color: #222;
   transition: 1s;
@@ -933,6 +980,41 @@ const Wrapper3 = styled.div`
       transition: 0.4s;
       :hover {
         transform: scale(1.2);
+      }
+    }
+  }
+  .notificationBell {
+    position: absolute;
+    top: 10%;
+    left: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    @media screen and (max-width: 900px) {
+      top: 8%;
+      left: 3%;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+    svg {
+      margin-bottom: 3px;
+      font-size: 1.6rem;
+      color: var(--secondaryColor);
+      cursor: pointer;
+      transition: 0.4s;
+
+      :hover {
+        transform: scale(1.2);
+      }
+    }
+    p {
+      font-size: 0.7rem;
+      text-align: center;
+      margin-top: 0;
+      @media screen and (max-width: 900px) {
+        display: none;
       }
     }
   }

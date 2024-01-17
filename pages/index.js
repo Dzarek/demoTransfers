@@ -5,7 +5,7 @@ import TransfersList from "../components/TransfersList";
 import Loading from "../components/Loading";
 import { useState, useEffect } from "react";
 import { FaCar, FaInfoCircle } from "react-icons/fa";
-import { subscribe } from "../components/Notification";
+// import { subscribe } from "../components/Notification";
 
 const bg3 = "/images/bg3.jpg";
 
@@ -16,41 +16,43 @@ export default function Home() {
 
   // NOTIFICATION
   useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("sw.js")
-        .then(function (registration) {
-          console.log(
-            "Service Worker registered with scope:",
-            registration.scope
-          );
-        })
-        .catch(function (error) {
-          console.error("Service Worker registration failed:", error);
+    if (isAdmin) {
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("sw.js")
+          .then(function (registration) {
+            console.log(
+              "Service Worker registered with scope:",
+              registration.scope
+            );
+          })
+          .catch(function (error) {
+            console.error("Service Worker registration failed:", error);
+          });
+      }
+      if ("Notification" in window && "PushManager" in window) {
+        Notification.requestPermission().then(function (permission) {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          }
         });
+      }
     }
-    if ("Notification" in window && "PushManager" in window) {
-      Notification.requestPermission().then(function (permission) {
-        if (permission === "granted") {
-          console.log("Notification permission granted.");
-        }
-      });
-    }
-  }, []);
+  }, [isAdmin]);
 
-  const handleSub = async () => {
-    const title = `nowy tytuł`;
-    const tag = new Date();
-    const body = `index body ${tag}`;
-    await subscribe(title, body, tag);
-  };
+  // const handleSub = async () => {
+  //   const title = `nowy tytuł`;
+  //   const tag = new Date();
+  //   const body = `index body ${tag}`;
+  //   await subscribe(title, body, tag, isAdmin);
+  // };
   // END NOTIFICATION
 
   return (
     <Wrapper>
-      <button onClick={handleSub} className="notiBtn">
+      {/* <button onClick={handleSub} className="notiBtn">
         Click to check notification
-      </button>
+      </button> */}
       {isAdmin ? (
         <div className="containerAdmin">
           <div className="titleContainer">
