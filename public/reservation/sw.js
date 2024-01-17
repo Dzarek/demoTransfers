@@ -21,7 +21,7 @@ const showLocalNotification = (title, body, tag, swRegistration) => {
 };
 
 self.addEventListener("notificationclick", function (event) {
-  const url = "https://dzarektest.pl/";
+  const url = "https://demo-transfers.vercel.app/";
   event.notification.close(); // Close the notification
 
   event.waitUntil(
