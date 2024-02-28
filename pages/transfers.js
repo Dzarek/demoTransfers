@@ -43,6 +43,8 @@ const TransfersPage = () => {
   const [openDeleteOption, setOpenDeleteOption] = useState(false);
   const [confirmDeleteOption, setConfirmDeleteOption] = useState(false);
 
+  const router = useRouter();
+
   // NOTIFICATION
   useEffect(() => {
     if (isAdmin) {
@@ -182,6 +184,7 @@ const TransfersPage = () => {
                       smooth={true}
                       duration={1000}
                       offset={-100}
+                      delay={200}
                       className={activeHotel === userName && "activeBtn"}
                       onClick={() => handleActiveHotel(id)}
                     >

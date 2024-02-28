@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useGlobalContext } from "../components/context";
 import FirstLoading from "../components/FirstLoading";
+import Login from "../pages/login";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useRouter } from "next/router";
@@ -23,9 +24,15 @@ const Layout = (props) => {
         <FirstLoading />
       ) : (
         <>
-          {router.pathname !== "/login" && currentUser && <Navbar />}
-          <main>{props.children}</main>
-          {router.pathname !== "/login" && currentUser && <Footer />}
+          {!currentUser ? (
+            <Login />
+          ) : (
+            <>
+              {router.pathname !== "/login" && currentUser && <Navbar />}
+              <main>{props.children}</main>
+              {router.pathname !== "/login" && currentUser && <Footer />}
+            </>
+          )}
         </>
       )}
     </>

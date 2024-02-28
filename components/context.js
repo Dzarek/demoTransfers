@@ -132,8 +132,12 @@ const AppProvider = ({ children }) => {
     setUserID("0");
     setIsAdmin(false);
     setActiveHotel(false);
-    setAllUsersTransfers([]);
     setTransfers([]);
+    setActiveTransfers([]);
+    setNext5Transfers([]);
+    setLastAddedTransfers([]);
+    setAllUsersList([]);
+    setAllUsersTransfers([]);
     // new
     setCurrentUser(null);
     router.push("/login");
@@ -392,7 +396,8 @@ const AppProvider = ({ children }) => {
     } else {
       setIsAdmin(false);
     }
-  }, [loading, transfers]);
+    // }, [loading, transfers]);
+  }, [loading, userID]);
 
   //   GET ONE USER TRANSFERS
   const getProducts = async () => {
