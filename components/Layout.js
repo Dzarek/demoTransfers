@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useGlobalContext } from "../components/context";
-import Login from "../components/auth/Login";
 import FirstLoading from "../components/FirstLoading";
-import Instruction from "../instruction/Instruction";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import { useRouter } from "next/router";
 
 const Layout = (props) => {
   const { currentUser } = useGlobalContext();
   const [firstLoading, setFirstLoading] = useState(true);
-  const [showInstruction, setShowInstruction] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -15,32 +15,17 @@ const Layout = (props) => {
     }, 5000);
   }, []);
 
+  const router = useRouter();
+
   return (
     <>
       {firstLoading ? (
         <FirstLoading />
       ) : (
         <>
-          {!currentUser ? (
-            <>
-              <Login />
-            </>
-          ) : (
-            <>
-              {!showInstruction && (
-                <button
-                  className="showInstructionBtn"
-                  onClick={() => setShowInstruction(true)}
-                >
-                  Instrukcja
-                </button>
-              )}
-              {showInstruction && (
-                <Instruction setShowInstruction={setShowInstruction} />
-              )}
-              <main>{props.children}</main>
-            </>
-          )}
+          {router.pathname !== "/login" && currentUser && <Navbar />}
+          <main>{props.children}</main>
+          {router.pathname !== "/login" && currentUser && <Footer />}
         </>
       )}
     </>

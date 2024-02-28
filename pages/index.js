@@ -6,13 +6,22 @@ import Loading from "../components/Loading";
 import { useState, useEffect } from "react";
 import { FaCar, FaInfoCircle } from "react-icons/fa";
 // import { subscribe } from "../components/Notification";
+import { useRouter } from "next/router";
 
 const bg3 = "/images/bg3.jpg";
 
 export default function Home() {
-  const { next5transfers, transfers, loading, isAdmin, lastAddedTransfers } =
-    useGlobalContext();
+  const {
+    next5transfers,
+    transfers,
+    loading,
+    isAdmin,
+    lastAddedTransfers,
+    currentUser,
+  } = useGlobalContext();
   const [lastAddedList, setLastAddedList] = useState(false);
+
+  const router = useRouter();
 
   // NOTIFICATION
   useEffect(() => {
@@ -47,6 +56,10 @@ export default function Home() {
   //   await subscribe(title, body, tag, isAdmin);
   // };
   // END NOTIFICATION
+
+  if (!currentUser) {
+    router.push("/login");
+  }
 
   return (
     <Wrapper>

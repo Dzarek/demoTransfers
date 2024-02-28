@@ -17,6 +17,7 @@ import { FaInfoCircle } from "react-icons/fa";
 import Link from "next/link";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import { useRouter } from "next/router";
 
 const bg = "/images/tBg.jpg";
 
@@ -33,6 +34,7 @@ const TransfersPage = () => {
     updateHotelPrice,
     disableUser,
     getAllUsers,
+    currentUser,
   } = useGlobalContext();
   const [nextNumber, setNextNumber] = useState(5);
   const [prevNumber, setPrevNumber] = useState(0);
@@ -155,6 +157,10 @@ const TransfersPage = () => {
     exitOption();
     getAllUsers();
   };
+
+  if (!currentUser) {
+    router.push("/login");
+  }
 
   return (
     <>

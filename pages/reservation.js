@@ -8,6 +8,7 @@ import { IoAddCircle, IoCheckmark } from "react-icons/io5";
 import { FaLock, FaLockOpen } from "react-icons/fa";
 import { sendConfirmation } from "../lib/api";
 import { subscribe } from "../components/Notification";
+import { GiCarWheel } from "react-icons/gi";
 
 let minDate = moment().format("YYYY-MM-DD");
 let maxDate = moment().add(90, "days").format("YYYY-MM-DD");
@@ -15,8 +16,15 @@ let maxDate = moment().add(90, "days").format("YYYY-MM-DD");
 let minTime = new Date().toLocaleTimeString().slice(0, 5);
 
 const ReservationPage = () => {
-  const { transfers, setTransfers, postProducts, isAdmin, name, moneyData } =
-    useGlobalContext();
+  const {
+    transfers,
+    setTransfers,
+    postProducts,
+    isAdmin,
+    name,
+    moneyData,
+    currentUser,
+  } = useGlobalContext();
   const [date, setDate] = useState(minDate);
   const [time, setTime] = useState(null);
   const [nameOfGuest, setNameOfGuest] = useState("");
@@ -30,6 +38,7 @@ const ReservationPage = () => {
   const [sendForm, setSendForm] = useState(false);
 
   const [specialTransfer, setSpecialTransfer] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { push } = useRouter();
 
@@ -60,6 +69,7 @@ const ReservationPage = () => {
   });
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     const createdDate = moment().valueOf();
     e.preventDefault();
     const id = uuidv4();
@@ -98,7 +108,6 @@ const ReservationPage = () => {
       specialTransfer
     );
     await handleSub(name, date, time, id);
-    setSendForm(true);
     setTimeout(() => {
       setDate(minDate);
       setTime(null);
@@ -114,12 +123,9 @@ const ReservationPage = () => {
       setSpecialTransfer(false);
     }, 2000);
     handleEmailConfirm();
+    setLoading(false);
+    setSendForm(true);
   };
-
-  if (isAdmin) {
-    push("/");
-    return <p></p>;
-  }
 
   const handleEmailConfirm = async () => {
     const convertDate = moment(date).format("L");
@@ -162,6 +168,15 @@ const ReservationPage = () => {
   };
   // END NOTIFICATION
 
+  if (!currentUser) {
+    push("/login");
+    return <p></p>;
+  }
+  if (isAdmin) {
+    push("/");
+    return <p></p>;
+  }
+
   return (
     <Wrapper>
       <div className="imgContainer">
@@ -181,243 +196,256 @@ const ReservationPage = () => {
         </h3>
       ) : (
         <>
-          {specialTransfer ? (
-            <form onSubmit={(e) => handleSubmit(e)} className="specialForm">
-              <div>
-                <section>
-                  <label htmlFor="date">Data:</label>
-                  <input
-                    type="date"
-                    name="date"
-                    value={date}
-                    min={minDate}
-                    max={maxDate}
-                    onChange={(e) => setDate(e.target.value)}
-                    required
-                  />
-                </section>
-                <section>
-                  <label htmlFor="time">Godzina:</label>
-                  <input
-                    type="time"
-                    name="time"
-                    value={time}
-                    min={date === minDate && minTime}
-                    onChange={(e) => setTime(e.target.value)}
-                    required
-                  />
-                </section>
-              </div>
-              <section>
-                <label htmlFor="name">Imię i Nazwisko:</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={nameOfGuest}
-                  onChange={(e) => setNameOfGuest(e.target.value)}
-                  required
-                />
-              </section>
-              <section>
-                <label htmlFor="direction">Kierunek:</label>
-                <select
-                  name="direction"
-                  value={direction}
-                  onChange={(e) => setDirection(e.target.value)}
-                  required
-                >
-                  {directions}
-                </select>{" "}
-              </section>
-              <div>
-                <section>
-                  <label htmlFor="people">Liczba osób:</label>
-                  <input
-                    type="number"
-                    required
-                    min={1}
-                    max={99}
-                    value={people}
-                    onChange={(e) => setPeople(e.target.value)}
-                  />
-                  <p>(max 99)</p>
-                </section>
-                <section>
-                  <label htmlFor="flyNumber">Numer lotu:</label>
-                  <input
-                    type="text"
-                    required={direction === `Kraków Airport - ${name}`}
-                    value={flight}
-                    onChange={(e) => setFlight(e.target.value)}
-                  />
-                </section>
-                <section>
-                  <label htmlFor="flyNumber">Telefon:</label>
-                  <input
-                    type="number"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    required
-                  />
-                </section>
-              </div>
-              <section>
-                <label htmlFor="details">Uwagi:</label>
-                <input
-                  type="text"
-                  value={details}
-                  onChange={(e) => setDetails(e.target.value)}
-                />
-              </section>
-              <div>
-                <section className="specialPrice">
-                  <label htmlFor="price">Cena:</label>
-                  <input
-                    type="number"
-                    value={price}
-                    onChange={(e) => setPrice(Number(e.target.value))}
-                  />
-                  <p> PLN</p>
-                  <FaLockOpen />
-                </section>
-                <section className="specialPrice">
-                  <label htmlFor="provision">Prowizja:</label>
-                  <input
-                    type="number"
-                    value={provision}
-                    onChange={(e) => setProvision(Number(e.target.value))}
-                  />
-                  <p> PLN</p>
-                  <FaLockOpen />
-                </section>
-              </div>
-              <button className="reservebutton" type="submit">
-                <IoAddCircle />
-              </button>
-            </form>
+          {loading ? (
+            <div className="savingReservation">
+              <GiCarWheel />
+              <h3>Dodawanie transferu...</h3>
+            </div>
           ) : (
-            <form onSubmit={(e) => handleSubmit(e)}>
-              <div>
-                <section>
-                  <label htmlFor="date">Data:</label>
-                  <input
-                    type="date"
-                    name="date"
-                    value={date}
-                    min={minDate}
-                    max={maxDate}
-                    onChange={(e) => setDate(e.target.value)}
-                    required
-                  />
-                </section>
-                <section>
-                  <label htmlFor="time">Godzina:</label>
-                  <input
-                    type="time"
-                    name="time"
-                    value={time}
-                    min={date === minDate && minTime}
-                    onChange={(e) => setTime(e.target.value)}
-                    required
-                  />
-                </section>
-              </div>
-              <section>
-                <label htmlFor="name">Imię i Nazwisko:</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={nameOfGuest}
-                  onChange={(e) => setNameOfGuest(e.target.value)}
-                  required
-                />
-              </section>
-              <section>
-                <label htmlFor="direction">Kierunek:</label>
-                <select
-                  name="direction"
-                  value={direction}
-                  onChange={(e) => setDirection(e.target.value)}
-                  required
-                >
-                  {directions}
-                </select>{" "}
-              </section>
-              <div>
-                <section>
-                  <label htmlFor="people">Liczba osób:</label>
-                  <input
-                    type="number"
-                    required
-                    min={1}
-                    max={8}
-                    value={people}
-                    onChange={(e) => setPeople(e.target.value)}
-                  />
-                  <p>(max 8)</p>
-                </section>
-                <section>
-                  <label htmlFor="flyNumber">Numer lotu:</label>
-                  <input
-                    type="text"
-                    required={direction === `Kraków Airport - ${name}`}
-                    value={flight}
-                    onChange={(e) => setFlight(e.target.value)}
-                  />
-                </section>
-                <section>
-                  <label htmlFor="flyNumber">Telefon:</label>
-                  <input
-                    type="number"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    required
-                  />
-                </section>
-              </div>
-              <section>
-                <label htmlFor="details">Uwagi:</label>
-                <input
-                  type="text"
-                  value={details}
-                  onChange={(e) => setDetails(e.target.value)}
-                />
-              </section>
-              <div>
-                <section className="price">
-                  <label htmlFor="price">Cena:</label>
-                  <h4>{price} PLN</h4>
-                  <FaLock />
-                </section>
-                <section className="price">
-                  <label htmlFor="provision">Prowizja:</label>
-                  <h4>{provision} PLN</h4>
-                  <FaLock />
-                </section>
-              </div>
-              <button className="reservebutton" type="submit">
-                <IoAddCircle />
-              </button>
-            </form>
+            <>
+              {specialTransfer ? (
+                <form onSubmit={(e) => handleSubmit(e)} className="specialForm">
+                  <div>
+                    <section>
+                      <label htmlFor="date">Data:</label>
+                      <input
+                        type="date"
+                        name="date"
+                        value={date}
+                        min={minDate}
+                        max={maxDate}
+                        onChange={(e) => setDate(e.target.value)}
+                        required
+                      />
+                    </section>
+                    <section>
+                      <label htmlFor="time">Godzina:</label>
+                      <input
+                        type="time"
+                        name="time"
+                        value={time}
+                        min={date === minDate && minTime}
+                        onChange={(e) => setTime(e.target.value)}
+                        required
+                      />
+                    </section>
+                  </div>
+                  <section>
+                    <label htmlFor="name">Imię i Nazwisko:</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={nameOfGuest}
+                      onChange={(e) => setNameOfGuest(e.target.value)}
+                      required
+                    />
+                  </section>
+                  <section>
+                    <label htmlFor="direction">Kierunek:</label>
+                    <select
+                      name="direction"
+                      value={direction}
+                      onChange={(e) => setDirection(e.target.value)}
+                      required
+                    >
+                      {directions}
+                    </select>{" "}
+                  </section>
+                  <div>
+                    <section>
+                      <label htmlFor="people">Liczba osób:</label>
+                      <input
+                        type="number"
+                        required
+                        min={1}
+                        max={99}
+                        value={people}
+                        onChange={(e) => setPeople(e.target.value)}
+                      />
+                      <p>(max 99)</p>
+                    </section>
+                    <section>
+                      <label htmlFor="flyNumber">Numer lotu:</label>
+                      <input
+                        type="text"
+                        required={direction === `Kraków Airport - ${name}`}
+                        value={flight}
+                        onChange={(e) => setFlight(e.target.value)}
+                      />
+                    </section>
+                    <section>
+                      <label htmlFor="flyNumber">Telefon:</label>
+                      <input
+                        type="number"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        required
+                      />
+                    </section>
+                  </div>
+                  <section>
+                    <label htmlFor="details">Uwagi:</label>
+                    <input
+                      type="text"
+                      value={details}
+                      onChange={(e) => setDetails(e.target.value)}
+                    />
+                  </section>
+                  <div>
+                    <section className="specialPrice">
+                      <label htmlFor="price">Cena:</label>
+                      <input
+                        type="number"
+                        value={price}
+                        onChange={(e) => setPrice(Number(e.target.value))}
+                      />
+                      <p> PLN</p>
+                      <FaLockOpen />
+                    </section>
+                    <section className="specialPrice">
+                      <label htmlFor="provision">Prowizja:</label>
+                      <input
+                        type="number"
+                        value={provision}
+                        onChange={(e) => setProvision(Number(e.target.value))}
+                      />
+                      <p> PLN</p>
+                      <FaLockOpen />
+                    </section>
+                  </div>
+                  <button className="reservebutton" type="submit">
+                    <IoAddCircle />
+                  </button>
+                </form>
+              ) : (
+                <form onSubmit={(e) => handleSubmit(e)}>
+                  <div>
+                    <section>
+                      <label htmlFor="date">Data:</label>
+                      <input
+                        type="date"
+                        name="date"
+                        value={date}
+                        min={minDate}
+                        max={maxDate}
+                        onChange={(e) => setDate(e.target.value)}
+                        required
+                      />
+                    </section>
+                    <section>
+                      <label htmlFor="time">Godzina:</label>
+                      <input
+                        type="time"
+                        name="time"
+                        value={time}
+                        min={date === minDate && minTime}
+                        onChange={(e) => setTime(e.target.value)}
+                        required
+                      />
+                    </section>
+                  </div>
+                  <section>
+                    <label htmlFor="name">Imię i Nazwisko:</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={nameOfGuest}
+                      onChange={(e) => setNameOfGuest(e.target.value)}
+                      required
+                    />
+                  </section>
+                  <section>
+                    <label htmlFor="direction">Kierunek:</label>
+                    <select
+                      name="direction"
+                      value={direction}
+                      onChange={(e) => setDirection(e.target.value)}
+                      required
+                    >
+                      {directions}
+                    </select>{" "}
+                  </section>
+                  <div>
+                    <section>
+                      <label htmlFor="people">Liczba osób:</label>
+                      <input
+                        type="number"
+                        required
+                        min={1}
+                        max={8}
+                        value={people}
+                        onChange={(e) => setPeople(e.target.value)}
+                      />
+                      <p>(max 8)</p>
+                    </section>
+                    <section>
+                      <label htmlFor="flyNumber">Numer lotu:</label>
+                      <input
+                        type="text"
+                        required={direction === `Kraków Airport - ${name}`}
+                        value={flight}
+                        onChange={(e) => setFlight(e.target.value)}
+                      />
+                    </section>
+                    <section>
+                      <label htmlFor="flyNumber">Telefon:</label>
+                      <input
+                        type="number"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        required
+                      />
+                    </section>
+                  </div>
+                  <section>
+                    <label htmlFor="details">Uwagi:</label>
+                    <input
+                      type="text"
+                      value={details}
+                      onChange={(e) => setDetails(e.target.value)}
+                    />
+                  </section>
+                  <div>
+                    <section className="price">
+                      <label htmlFor="price">Cena:</label>
+                      <h4>{price} PLN</h4>
+                      <FaLock />
+                    </section>
+                    <section className="price">
+                      <label htmlFor="provision">Prowizja:</label>
+                      <h4>{provision} PLN</h4>
+                      <FaLock />
+                    </section>
+                  </div>
+                  <button className="reservebutton" type="submit">
+                    <IoAddCircle />
+                  </button>
+                </form>
+              )}
+            </>
           )}
         </>
       )}
-      {specialTransfer ? (
-        <button
-          className="specialTransfer"
-          onClick={() => setSpecialTransfer(false)}
-          style={{ background: "#e9d7b6", color: "#111" }}
-        >
-          zmień na transfer zwykły
-        </button>
-      ) : (
-        <button
-          className="specialTransfer"
-          onClick={() => setSpecialTransfer(true)}
-          style={{ background: "#50708ccb" }}
-        >
-          zmień na transfer specjalny
-        </button>
+      {!loading && (
+        <>
+          {specialTransfer ? (
+            <button
+              className="specialTransfer"
+              onClick={() => setSpecialTransfer(false)}
+              style={{ background: "#e9d7b6", color: "#111" }}
+            >
+              zmień na transfer zwykły
+            </button>
+          ) : (
+            <button
+              className="specialTransfer"
+              onClick={() => setSpecialTransfer(true)}
+              style={{ background: "#50708ccb" }}
+            >
+              zmień na transfer specjalny
+            </button>
+          )}
+        </>
       )}
       {specialTransfer && (
         <p className="specialInfo">
@@ -428,7 +456,6 @@ const ReservationPage = () => {
     </Wrapper>
   );
 };
-
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -812,6 +839,29 @@ const Wrapper = styled.div`
       width: 90vw;
       margin: -2vh auto 14vh;
       text-align: center;
+    }
+  }
+  .savingReservation {
+    width: 50vw;
+    margin-right: 5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-transform: lowercase;
+    @media screen and (max-width: 900px) {
+      width: 90vw;
+      margin: 0 auto 10vh;
+    }
+    h3 {
+      font-size: 1.2rem;
+      color: white;
+      margin-top: 20px;
+      font-weight: 500;
+    }
+    svg {
+      font-size: 5rem;
+      color: var(--secondaryColor);
+      animation: loaderRotate 1.5s linear infinite;
     }
   }
 `;

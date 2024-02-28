@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { useGlobalContext } from "../context";
-import LoginInstruction from "../../instruction/LoginInstruction";
+import { useGlobalContext } from "../components/context";
+import LoginInstruction from "../instruction/LoginInstruction";
 
 const loginBg = "/images/loginBg.jpg";
 

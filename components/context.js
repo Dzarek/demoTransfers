@@ -23,6 +23,7 @@ import {
 import * as XLSX from "xlsx";
 import { sendConfirmationCancel } from "../lib/api";
 import { subscribe } from "./Notification";
+import { useRouter } from "next/router";
 
 const AppContext = React.createContext();
 
@@ -84,6 +85,7 @@ const AppProvider = ({ children }) => {
   const [downloadData, setDownloadData] = useState(null);
 
   // END OTHER USESTATE
+  const router = useRouter();
 
   // AUTH
   const getUser = getAuth();
@@ -106,6 +108,7 @@ const AppProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
+    logout();
     await signInWithEmailAndPassword(auth, email, password);
     const getData = doc(db, `usersList/${getUser.currentUser.uid}`);
     const data2 = await getDoc(getData);
@@ -119,17 +122,21 @@ const AppProvider = ({ children }) => {
     if (getUser.currentUser.displayName === null) {
       setModalName(true);
     }
+    router.push("/");
   };
 
-  const logout = () => {
+  const logout = async () => {
     setLoading(true);
-    signOut(auth);
+    await signOut(auth);
     setName("");
     setUserID("0");
     setIsAdmin(false);
     setActiveHotel(false);
     setAllUsersTransfers([]);
     setTransfers([]);
+    // new
+    setCurrentUser(null);
+    router.push("/login");
   };
 
   // UNSUBSCRIBE

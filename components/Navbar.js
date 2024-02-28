@@ -23,6 +23,7 @@ import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from "react-icons/io";
 import { GiHomeGarage } from "react-icons/gi";
 import MoneySumCharts from "./MoneySumCharts";
 import ImportModal from "./ImportModal";
+import Instruction from "../instruction/Instruction";
 
 import { subscribe } from "./Notification";
 
@@ -54,6 +55,7 @@ const Navbar = () => {
   const [newName, setNewName] = useState("");
   const [openImportModal, setOpenImportModal] = useState(false);
   const [notiInfo, setNotiInfo] = useState(false);
+  const [showInstruction, setShowInstruction] = useState(false);
 
   const router = useRouter();
 
@@ -121,6 +123,16 @@ const Navbar = () => {
 
   return (
     <>
+      {!showInstruction ? (
+        <button
+          className="showInstructionBtn"
+          onClick={() => setShowInstruction(true)}
+        >
+          Instrukcja
+        </button>
+      ) : (
+        <Instruction setShowInstruction={setShowInstruction} />
+      )}
       <Wrapper
         style={{
           borderBottom:
