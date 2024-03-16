@@ -135,7 +135,7 @@ const ReservationPage = () => {
       setProvision(0);
       setSendForm(false);
       setSpecialTransfer(false);
-    }, 1000);
+    }, 500);
     handleEmailConfirm();
     setLoading(false);
     setSendForm(true);
