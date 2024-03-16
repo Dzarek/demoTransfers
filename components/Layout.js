@@ -5,6 +5,7 @@ import Login from "../pages/login";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useRouter } from "next/router";
+import { Toaster } from "react-hot-toast";
 
 const Layout = (props) => {
   const { currentUser } = useGlobalContext();
@@ -29,7 +30,18 @@ const Layout = (props) => {
           ) : (
             <>
               {router.pathname !== "/login" && currentUser && <Navbar />}
-              <main>{props.children}</main>
+              <main>
+                <Toaster
+                  position="bottom-center"
+                  containerStyle={{
+                    top: 20,
+                    left: 20,
+                    bottom: 80,
+                    right: 20,
+                  }}
+                />
+                {props.children}
+              </main>
               {router.pathname !== "/login" && currentUser && <Footer />}
             </>
           )}

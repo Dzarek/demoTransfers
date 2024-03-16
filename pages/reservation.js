@@ -9,6 +9,7 @@ import { FaLock, FaLockOpen } from "react-icons/fa";
 import { sendConfirmation } from "../lib/api";
 import { subscribe } from "../components/Notification";
 import { GiCarWheel } from "react-icons/gi";
+import toast from "react-hot-toast";
 
 let minDate = moment().format("YYYY-MM-DD");
 let maxDate = moment().add(90, "days").format("YYYY-MM-DD");
@@ -28,7 +29,8 @@ const ReservationPage = () => {
   const [date, setDate] = useState(minDate);
   const [time, setTime] = useState(null);
   const [nameOfGuest, setNameOfGuest] = useState("");
-  const [direction, setDirection] = useState(`${name} - Kraków Airport`);
+  // const [direction, setDirection] = useState(`${name} - Kraków Airport`);
+  const [direction, setDirection] = useState(`---`);
   const [people, setPeople] = useState(null);
   const [flight, setFlight] = useState("");
   const [phone, setPhone] = useState(null);
@@ -58,6 +60,7 @@ const ReservationPage = () => {
   }, [people]);
 
   const directions = [
+    `---`,
     `${name} - Kraków Airport`,
     `Kraków Airport - ${name}`,
   ].map((item, index) => {
@@ -69,9 +72,20 @@ const ReservationPage = () => {
   });
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (direction === "---") {
+      toast("Musisz wybrać kierunek transferu!", {
+        icon: "❗",
+        style: {
+          borderRadius: "10px",
+          background: "#fff",
+          color: "#222",
+        },
+      });
+      return;
+    }
     setLoading(true);
     const createdDate = moment().valueOf();
-    e.preventDefault();
     const id = uuidv4();
     const status = "pending";
     const newTransfer = {
@@ -112,7 +126,7 @@ const ReservationPage = () => {
       setDate(minDate);
       setTime(null);
       setNameOfGuest("");
-      // setDirection(`${name} - Kraków Airport`);
+      setDirection(`---`);
       setPeople(null);
       setFlight("");
       setPhone(null);
@@ -121,7 +135,7 @@ const ReservationPage = () => {
       setProvision(0);
       setSendForm(false);
       setSpecialTransfer(false);
-    }, 2000);
+    }, 1000);
     handleEmailConfirm();
     setLoading(false);
     setSendForm(true);
