@@ -416,13 +416,13 @@ const AppProvider = ({ children }) => {
       }
     }
     try {
-      const data = await getDocs(getProductsCollectionRefOneUser);
-      const items = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      if (items.length > 0) {
-        setTransfers(items);
-      } else {
-        setTransfers([]);
-      }
+      // const data = await getDocs(getProductsCollectionRefOneUser);
+      // const items = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      // if (items.length > 0) {
+      //   setTransfers(items);
+      // } else {
+      //   setTransfers([]);
+      // }
 
       // Jak będzie za dużo strzałów do API to zmienić na to wyżej
       onSnapshot(getProductsCollectionRefOneUser, (snapshot) => {
