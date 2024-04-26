@@ -15,11 +15,7 @@ export const Email = ({ dataUpperCase, convertDate }) => (
     <Body style={main}>
       <Container style={container}>
         <Row style={header}>
-          <Img
-            style={imgHeader}
-            width={340}
-            src="https://demo-transfers.vercel.app/images/car2.png"
-          />
+          <Img style={imgHeader} width={340} src="/images/car2.png" />
           <Heading style={headerContentTitle}>
             NOWY TRANSFER OD {dataUpperCase}
           </Heading>
