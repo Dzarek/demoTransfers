@@ -18,7 +18,7 @@ export const Email = ({ dataUpperCase, convertDate, nameOfGuestUpperCase }) => (
           <Img
             style={imgHeader}
             width={180}
-            src="https://demo-transfers.vercel.app/images/car2.png"
+            src="https://demo-transfers.vercel.app/images/cancelEmail.png"
           />
           <Heading style={headerContentTitle}>
             ANULACJA TRANSFERU OD {dataUpperCase}
