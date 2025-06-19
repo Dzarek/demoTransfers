@@ -116,7 +116,7 @@ const Navbar = () => {
   const handleSub = async () => {
     const title = `powiadomienia włączone`;
     const tag = new Date();
-    const body = ``;
+    const body = `👍`;
     await subscribe(title, body, tag, isAdmin);
   };
   // END NOTIFICATION

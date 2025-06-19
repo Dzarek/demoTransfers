@@ -1,6 +1,9 @@
 import webpush from "web-push";
 import { query } from "../../lib/db";
 
+// const vapidKeys = webpush.generateVAPIDKeys();
+// console.log(vapidKeys);
+
 webpush.setVapidDetails(
   process.env.NEXT_PUBLIC_WEB_PUSH_EMAIL,
   process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY,
